@@ -2,8 +2,8 @@
 
 namespace App\Domains\User\Repositories\Contracts\User;
 
-use App\Domains\User\DTOs\User\UserDTO;
 use App\Domains\User\Entities\User\UserEntity;
+use App\Models\User;
 
 interface UserRepositoryInterface
 {
@@ -14,5 +14,9 @@ interface UserRepositoryInterface
      */
 
 
-    public function create(UserDTO $userDTO): UserEntity;
+    public function create(UserEntity $userEntity): UserEntity;
+
+    public function findByEmail(string $email): ?UserEntity;
+
+    public function findById(int $id): ?UserEntity;
 }

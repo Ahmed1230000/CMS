@@ -9,7 +9,7 @@ class UserMapper
 {
     public static function toEntity(User $user): UserEntity
     {
-        return UserEntity::fromArray([
+        return UserEntity::reconstitute([
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
