@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Infrastructure\QueryBuilder\User;
+namespace App\Infrastructure\QueryBuilder\Permission;
 
 use App\Infrastructure\BaseQueryBuilder;
-use App\Models\User;
+use App\Models\Permission;
 
-class UserQueryBuilder extends BaseQueryBuilder
+class PermissionQueryBuilder extends BaseQueryBuilder
 {
-    protected string $model = User::class;
+    protected string $model = Permission::class;
 
     protected array $allowedIncludes = [
         //

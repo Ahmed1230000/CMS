@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Infrastructure\QueryBuilder\User;
+namespace App\Infrastructure\QueryBuilder\Roles;
 
 use App\Infrastructure\BaseQueryBuilder;
-use App\Models\User;
+use App\Models\Roles;
 
-class UserQueryBuilder extends BaseQueryBuilder
+class RolesQueryBuilder extends BaseQueryBuilder
 {
-    protected string $model = User::class;
+    protected string $model = Roles::class;
 
     protected array $allowedIncludes = [
         //

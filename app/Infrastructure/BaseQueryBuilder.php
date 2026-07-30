@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Infrastructure\QueryBuilder;
+namespace App\Infrastructure;
 
-use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\QueryBuilder;
 
 abstract class BaseQueryBuilder
 {
+
     protected array $allowedIncludes = [];
     protected array $allowedFilters = [];
     protected array $allowedSorts = [];
 
     protected string $model;
 
-    public function query(): Builder
+    public function query(): QueryBuilder
     {
         // 🧠 check if spatie exists
         if (class_exists(\Spatie\QueryBuilder\QueryBuilder::class)) {
