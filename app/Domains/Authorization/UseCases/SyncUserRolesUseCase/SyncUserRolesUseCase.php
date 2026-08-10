@@ -23,8 +23,8 @@ class SyncUserRolesUseCase
     |--------------------------------------------------------------------------
     */
 
-    public function execute(SyncUserRolesDTO $dto) 
+    public function execute(SyncUserRolesDTO $dto)
     {
-        $this->repository->assignRoleToModel($dto->userId,$dto->roleIds);
+        $this->repository->assignRoleToModel($dto->userId, $dto->roleIds);
     }
 }

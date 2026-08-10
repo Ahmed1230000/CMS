@@ -6,6 +6,7 @@ use App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface;
 use App\Domains\Identity\DTOs\Login\LoginDTO;
 use App\Domains\Identity\DTOs\Login\LoginResultDTO;
 use App\Domains\Identity\Exceptions\Login\InvalidCredentialsException;
+use App\Domains\Identity\Service\CreateSessionService;
 use App\Domains\Identity\Service\PassportTokenService;
 use App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
 
@@ -20,7 +21,8 @@ class LoginUseCase
     public function __construct(
         private UserRepositoryInterface $repository,
         private HashPasswordRepositoryInterface $hashPasswordRepository,
-        private PassportTokenService $passportTokenService
+        private PassportTokenService $passportTokenService,
+        private CreateSessionService $createSessionService
     ) {}
 
     /*
@@ -29,7 +31,7 @@ class LoginUseCase
     |--------------------------------------------------------------------------
     */
 
-    public function execute(LoginDTO $dto): LoginResultDTO
+    public function execute(LoginDTO $dto): void
     {
         $findEmail = $this->repository->findByEmail($dto->email->value());
 
@@ -41,11 +43,14 @@ class LoginUseCase
             throw new InvalidCredentialsException('The email or password you entered is incorrect.');
         }
 
-        $token = $this->passportTokenService->createToken($findEmail);
+        $this->createSessionService->login($findEmail);
 
-        return new LoginResultDTO(
-            token: $token,
-            user: $findEmail
-        );
+        // $token = $this->passportTokenService->createToken($findEmail);
+
+
+        // return new LoginResultDTO(
+        //     token: $token,
+        //     user: $findEmail
+        // );
     }
 }

@@ -30,6 +30,8 @@ class SyncRolePermissionsUseCase
         // $role = $this->repository->findById($dto->roleId);
         // $permissions = $this->permissionRepositoryInterface->findMany($dto->permissionIds);
 
-        return  $this->repository->syncPermissions($dto->roleId, $dto->permissionIds);
+        // dd($dto);
+
+        $this->repository->syncPermissions($dto->roleId, $dto->permissionIds);
     }
 }

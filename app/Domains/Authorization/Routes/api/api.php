@@ -8,10 +8,10 @@ use App\Domains\Authorization\Http\Controllers\Roles\SyncUserRolesController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware('auth:api')->group(function () {
-    Route::apiResource('/roles', RolesController::class);
-    Route::apiresource('/permissions', PermissionController::class);
-    Route::post('/assign_role_permissions', SyncRolePermissionsController::class);
-    Route::post('/assign_role_to_user', SyncUserRolesController::class);
-    Route::post('/assign_permissions_to_user', SyncUserPermissionsController::class);
-});
+// Route::middleware('auth:api')->group(function () {
+//     Route::apiResource('/roles', RolesController::class);
+//     Route::apiresource('/permissions', PermissionController::class);
+//     Route::post('/assign_role_permissions', SyncRolePermissionsController::class);
+//     Route::post('/assign_role_to_user', SyncUserRolesController::class);
+//     Route::post('/assign_permissions_to_user', SyncUserPermissionsController::class);
+// });

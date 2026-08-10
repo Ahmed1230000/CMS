@@ -2,6 +2,7 @@
 
 namespace App\Domains\Identity\UseCases\LogoutUseCase;
 
+use App\Domains\Identity\Service\CreateSessionService;
 use App\Domains\Identity\Service\PassportTokenService;
 use App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface;
 
@@ -16,7 +17,9 @@ class LogoutUseCase
 
     public function __construct(
         private UserRepositoryInterface $userRepositoryInterface,
-        private PassportTokenService $passportTokenService
+        private PassportTokenService $passportTokenService,
+        private CreateSessionService $sessionService
+
     ) {}
 
     /*
@@ -25,9 +28,10 @@ class LogoutUseCase
     |--------------------------------------------------------------------------
     */
 
-    public function execute(int $id)
+    public function execute($id = null): void
     {
-        $model = $this->userRepositoryInterface->findById($id);
-        return $this->passportTokenService->logout($model);
+        $this->sessionService->logout();
+        // $model = $this->userRepositoryInterface->findById($id);
+        // return $this->passportTokenService->logout($model);
     }
 }

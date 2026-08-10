@@ -8,9 +8,15 @@ use App\Domains\Authorization\Mapper\PermissionMapper;
 use App\Domains\Authorization\Repositories\Contracts\Permission\PermissionRepositoryInterface;
 use App\Models\Permission;
 use App\Models\User;
+use Spatie\Permission\Models\Permission as ModelsPermission;
 
 class PermissionEloquentRepository implements PermissionRepositoryInterface
 {
+
+    public function list($perPage = 5)
+    {
+        return Permission::paginate($perPage);
+    }
 
     public function findById(int $id): PermissionEntity
     {
@@ -52,6 +58,7 @@ class PermissionEloquentRepository implements PermissionRepositoryInterface
     public function syncUserPermissions(int $userId, array $permissionIds)
     {
         $user = User::findOrFail($userId);
+        $permissionIds = ModelsPermission::whereIn('id', $permissionIds)->get();
         $user->syncPermissions($permissionIds);
     }
 }

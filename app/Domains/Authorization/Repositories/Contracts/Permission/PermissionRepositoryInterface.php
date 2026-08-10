@@ -13,6 +13,8 @@ interface PermissionRepositoryInterface
      * Define your contract.
      * The implementation depends on your business rules.
      */
+
+    public function list();
     public function findById(int $id): PermissionEntity;
     public function create(PermissionEntity $permissionEntity): PermissionEntity;
     public function update(PermissionEntity $permissionEntity): PermissionEntity;

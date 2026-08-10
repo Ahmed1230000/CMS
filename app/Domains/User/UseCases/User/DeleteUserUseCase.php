@@ -13,8 +13,6 @@ class DeleteUserUseCase
 
     public function execute(int $id)
     {
-        // TODO: implement business logic
-        $this->repository;
-
+        $this->repository->delete($id);
     }
 }
