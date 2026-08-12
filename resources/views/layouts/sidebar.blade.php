@@ -76,6 +76,17 @@
 
             </a>
 
+            <a
+                href="{{ route('departments.list') }}"
+                class="mt-2 flex items-center rounded-xl px-4 py-3 font-medium transition
+        {{ request()->routeIs('departments.*')
+            ? 'bg-blue-600 text-white'
+            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                Departments
+
+            </a>
+
         </div>
 
     </nav>

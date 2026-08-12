@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domains\Department\Database\Seeders\DepartmentSeeder;
 use App\Domains\User\Database\Seeders\UserSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RoleAndPermissionSeeder::class,
+            DepartmentSeeder::class,
         ]);
     }
 }
