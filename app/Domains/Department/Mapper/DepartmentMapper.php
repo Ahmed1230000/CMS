@@ -3,6 +3,8 @@
 namespace App\Domains\Department\Mapper;
 
 use App\Domains\Department\Entities\Department\DepartmentEntity;
+use App\Domains\User\Entities\User\UserEntity;
+use App\Domains\User\Mapper\UserMapper;
 use App\Models\Department;
 
 class DepartmentMapper
@@ -19,6 +21,8 @@ class DepartmentMapper
             'created_at'  => $department->created_at,
             'updated_at'  => $department->updated_at,
             'deleted_at'  => $department->deleted_at,
+
+            'creator' => $department->relationLoaded('creator') ? UserMapper::toEntity($department->creator) : null
         ]);
     }
 }

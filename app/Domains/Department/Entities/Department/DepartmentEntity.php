@@ -2,6 +2,7 @@
 
 namespace App\Domains\Department\Entities\Department;
 
+use App\Domains\User\Entities\User\UserEntity;
 use Illuminate\Support\Carbon;
 
 class DepartmentEntity
@@ -16,6 +17,7 @@ class DepartmentEntity
         public readonly Carbon  $created_at,
         public readonly Carbon  $updated_at,
         public readonly ?Carbon $deleted_at,
+        public readonly ?UserEntity $creator
     ) {}
 
 
@@ -31,6 +33,7 @@ class DepartmentEntity
             $data['created_at'],
             $data['updated_at'],
             $data['deleted_at'],
+            $data['creator']
         );
     }
 
@@ -51,6 +54,7 @@ class DepartmentEntity
             created_at: $now,
             updated_at: $now,
             deleted_at: null,
+            creator: null
         );
     }
 
@@ -72,6 +76,7 @@ class DepartmentEntity
             created_at: $this->created_at,
             updated_at: $now,
             deleted_at: $this->deleted_at,
+            creator: $this->creator
         );
     }
 }

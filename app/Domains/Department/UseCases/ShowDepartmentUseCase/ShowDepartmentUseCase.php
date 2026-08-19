@@ -25,6 +25,7 @@ class ShowDepartmentUseCase
 
     public function execute(int $id)
     {
+
         return $this->repository->show($id);
     }
 }

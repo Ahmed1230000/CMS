@@ -5,6 +5,7 @@ namespace App\Domains\Department\Repositories\Eloquent\Department;
 use App\Domains\Department\Entities\Department\DepartmentEntity;
 use App\Domains\Department\Mapper\DepartmentMapper;
 use App\Domains\Department\Repositories\Contracts\Department\DepartmentRepositoryInterface;
+use App\Infrastructure\QueryBuilder\Department\DepartmentQueryBuilder;
 use App\Models\Department;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Override;
@@ -33,7 +34,9 @@ class DepartmentEloquentRepository implements DepartmentRepositoryInterface
 
     public function show(int $id): DepartmentEntity
     {
-        $department = Department::findOrFail($id)->fresh();
+        $query = (new DepartmentQueryBuilder)->query();
+
+        $department = $query->findOrFail($id);
 
         return DepartmentMapper::toEntity($department);
     }
