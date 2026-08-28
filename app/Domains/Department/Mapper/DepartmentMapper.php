@@ -3,7 +3,6 @@
 namespace App\Domains\Department\Mapper;
 
 use App\Domains\Department\Entities\Department\DepartmentEntity;
-use App\Domains\User\Entities\User\UserEntity;
 use App\Domains\User\Mapper\UserMapper;
 use App\Models\Department;
 
