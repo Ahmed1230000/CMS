@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domains\Doctor\Database\Seeders\DoctorSeeder;
 use App\Domains\Hr\Database\Seeders\HrSeeder;
 use App\Domains\Department\Database\Seeders\DepartmentSeeder;
 use App\Domains\User\Database\Seeders\UserSeeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             DepartmentSeeder::class,
             HrSeeder::class,
+            DoctorSeeder::class,
         ]);
     }
 }

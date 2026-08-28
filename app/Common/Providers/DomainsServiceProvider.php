@@ -9,6 +9,7 @@ class DomainsServiceProvider  extends ServiceProvider
 {
     public function register()
     {
+        $this->app->register(\App\Domains\Doctor\Providers\DoctorDomainServiceProvider::class);
         $this->app->register(\App\Domains\Hr\Providers\HrDomainServiceProvider::class);
         $this->app->register(\App\Domains\Department\Providers\DepartmentDomainServiceProvider::class);
         $this->app->register(\App\Domains\Authorization\Providers\AuthorizationDomainServiceProvider::class);

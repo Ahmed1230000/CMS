@@ -2,11 +2,11 @@
 
     @include('layouts.navbar')
 
-    <div class="flex bg-slate-100">
+    <div class="min-h-screen bg-slate-100">
 
         @include('layouts.sidebar')
 
-        <main class="flex-1 overflow-y-auto p-8">
+        <main class="ml-72 min-h-screen p-8">
 
             <x-notification />
 

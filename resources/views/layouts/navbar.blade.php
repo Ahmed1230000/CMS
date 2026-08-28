@@ -1,11 +1,9 @@
-<nav class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-8">
+<nav class="ml-72 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-8">
 
     <div>
 
         <h2 class="text-lg font-semibold text-slate-800">
-
             Dashboard
-
         </h2>
 
     </div>
@@ -14,23 +12,19 @@
 
         @auth
 
-        <div class="text-right">
+            <div class="text-right">
 
-            <p class="font-medium text-slate-800">
+                <p class="font-medium text-slate-800">
+                    {{ auth()->user()->email }}
+                </p>
 
-                {{ auth()->user()->email }}
+                <p class="text-sm text-slate-500">
+                    {{ auth()->user()->name }}
+                </p>
 
-            </p>
+            </div>
 
-            <p class="text-sm text-slate-500">
-
-                {{ auth()->user()->name }}
-
-            </p>
-
-        </div>
-
-        <livewire:layouts.logout />
+            <livewire:layouts.logout />
 
         @endauth
 
