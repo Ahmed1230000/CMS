@@ -1,8 +1,8 @@
 <?php
 
 use App\Common\Traits\FlashMessageException;
-use App\Domains\Doctor\UseCases\Doctor\DeleteDoctorUseCase;
-use App\Domains\Doctor\UseCases\ListDoctorsUseCase\ListDoctorsUseCase;
+use App\Domains\Employee\UseCases\Employee\DeleteEmployeeUseCase;
+use App\Domains\Employee\UseCases\ListEmplyeesUseCase\ListEmplyeesUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -10,38 +10,36 @@ use Livewire\Component;
 new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
-    
-    protected ListDoctorsUseCase $listDoctorsUseCase;
-    protected DeleteDoctorUseCase $deleteDoctorUseCase;
+
+    protected ListEmplyeesUseCase $listEmplyeesUseCase;
+    protected DeleteEmployeeUseCase $deleteEmployeeUseCase;
 
     public function boot(
-        ListDoctorsUseCase $listDoctorsUseCase,
-        DeleteDoctorUseCase $deleteDoctorUseCase
+        ListEmplyeesUseCase $listEmplyeesUseCase,
+        DeleteEmployeeUseCase $deleteEmployeeUseCase
     ): void {
-        $this->listDoctorsUseCase = $listDoctorsUseCase;
-        $this->deleteDoctorUseCase = $deleteDoctorUseCase;
+        $this->listEmplyeesUseCase = $listEmplyeesUseCase;
+        $this->deleteEmployeeUseCase = $deleteEmployeeUseCase;
     }
 
     #[Computed]
-    public function doctors()
+    public function employees()
     {
-        return $this->listDoctorsUseCase->execute();
+        return $this->listEmplyeesUseCase->execute();
     }
 
     public function delete(int $id)
     {
         try {
+            $this->deleteEmployeeUseCase->execute($id);
 
-            $this->deleteDoctorUseCase->execute($id);
-
-            unset($this->doctors);
+            unset($this->employees);
 
             session()->flash(
                 'success',
-                'Doctor deleted successfully.'
+                'Employee deleted successfully.'
             );
-        } catch (\Throwable $exception) {
-
+        } catch (\Exception $exception) {
             $this->handleException($exception);
         }
     }
@@ -50,34 +48,32 @@ new #[Layout('layouts.dashboard')] class extends Component
 
 <div>
 
-    {{-- Page Header --}}
     <div class="mb-8 flex items-center justify-between">
 
         <div>
 
             <h1 class="text-3xl font-bold text-slate-800">
-                Doctors
+                Employees
             </h1>
 
             <p class="mt-2 text-slate-500">
-                Manage all hospital doctors.
+                Manage hospital employees.
             </p>
 
         </div>
 
         <a
-            href="{{ route('doctors.create') }}"
+            href="{{ route('employees.create') }}"
             wire:navigate
             class="inline-flex items-center rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700">
 
-            + Create Doctor
+            + Create Employee
 
         </a>
 
     </div>
 
 
-    {{-- Doctors Table --}}
     <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
 
         <table class="min-w-full">
@@ -86,31 +82,31 @@ new #[Layout('layouts.dashboard')] class extends Component
 
                 <tr>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
                         #ID
                     </th>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
-                        License Number
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Name
                     </th>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
-                        Specialization
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Employee Number
                     </th>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
+                        Job Title
+                    </th>
+
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
                         Phone
                     </th>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
-                        Email
-                    </th>
-
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
                         Status
                     </th>
 
-                    <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">
+                    <th class="px-6 py-4 text-left text-sm font-semibold">
                         Actions
                     </th>
 
@@ -120,42 +116,42 @@ new #[Layout('layouts.dashboard')] class extends Component
 
             <tbody>
 
-                @forelse ($this->doctors as $doctor)
+                @forelse ($this->employees as $employee)
 
                 <tr class="border-b last:border-b-0">
 
                     <td class="px-6 py-4">
-                        {{ $doctor->id }}
+                        {{ $employee->id }}
                     </td>
 
                     <td class="px-6 py-4">
 
                         <a
-                            href="{{ route('doctors.show', $doctor->id) }}"
+                            href="{{ route('employees.show', $employee->id) }}"
                             wire:navigate
                             class="font-medium text-blue-600 transition hover:underline">
 
-                            {{ $doctor->license_number }}
+                            {{ $employee->name }}
 
                         </a>
 
                     </td>
 
                     <td class="px-6 py-4 text-slate-600">
-                        {{ $doctor->specialization }}
+                        {{ $employee->employee_number }}
                     </td>
 
                     <td class="px-6 py-4 text-slate-600">
-                        {{ $doctor->phone }}
+                        {{ $employee->job_title }}
                     </td>
 
                     <td class="px-6 py-4 text-slate-600">
-                        {{ $doctor->email }}
+                        {{ $employee->phone }}
                     </td>
 
                     <td class="px-6 py-4">
 
-                        @if ($doctor->is_active)
+                        @if ($employee->is_active)
 
                         <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
                             Active
@@ -176,7 +172,7 @@ new #[Layout('layouts.dashboard')] class extends Component
                         <div class="flex items-center gap-2">
 
                             <a
-                                href="{{ route('doctors.show', $doctor->id) }}"
+                                href="{{ route('employees.show', $employee->id) }}"
                                 wire:navigate
                                 class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200">
 
@@ -185,18 +181,17 @@ new #[Layout('layouts.dashboard')] class extends Component
                             </a>
 
                             <a
-                                href="{{ route('doctors.edit', $doctor->id) }}"
+                                href="{{ route('employees.update', $employee->id) }}"
                                 wire:navigate
                                 class="rounded-lg bg-blue-100 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-200">
 
                                 Update
 
                             </a>
-
                             <button
                                 type="button"
-                                wire:click="delete({{ $doctor->id }})"
-                                wire:confirm="Are you sure you want to delete this doctor?"
+                                wire:click="delete({{ $employee->id }})"
+                                wire:confirm="Are you sure you want to delete this {{ $employee->name }}?"
                                 wire:loading.attr="disabled"
                                 class="rounded-lg bg-red-100 px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-200 disabled:opacity-50">
 
@@ -218,7 +213,7 @@ new #[Layout('layouts.dashboard')] class extends Component
                         colspan="7"
                         class="px-6 py-12 text-center text-slate-500">
 
-                        No doctors found.
+                        No employees found.
 
                     </td>
 
@@ -233,10 +228,9 @@ new #[Layout('layouts.dashboard')] class extends Component
     </div>
 
 
-    {{-- Pagination --}}
     <div class="mt-6">
 
-        {{ $this->doctors->links() }}
+        {{ $this->employees->links() }}
 
     </div>
 

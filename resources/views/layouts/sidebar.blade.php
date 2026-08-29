@@ -115,7 +115,7 @@
         {{-- Management --}}
         <details
             class="group"
-            {{ request()->routeIs('departments.*', 'hrs.*', 'doctors.*') ? 'open' : '' }}>
+            {{ request()->routeIs('departments.*', 'hrs.*', 'doctors.*','employees.*') ? 'open' : '' }}>
 
             <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
 
@@ -177,6 +177,17 @@
                         : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
 
                     Doctors
+
+                </a>
+                {{-- Employee --}}
+                <a
+                    href="{{ route('employees.index') }}"
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+                    {{ request()->routeIs('employees.*')
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                    Employee
 
                 </a>
 
