@@ -21,10 +21,12 @@ abstract class BaseQueryBuilder
             $query = \Spatie\QueryBuilder\QueryBuilder::for($this->model);
 
             if (!empty($this->allowedIncludes)) {
-                $query->allowedIncludes($this->allowedIncludes);
+                foreach ($this->allowedIncludes as $include)
+                    $query->allowedIncludes($include);
             }
 
             if (!empty($this->allowedFilters)) {
+                
                 $query->allowedFilters($this->allowedFilters);
             }
 

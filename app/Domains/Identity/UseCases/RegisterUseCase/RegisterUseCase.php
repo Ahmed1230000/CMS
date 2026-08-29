@@ -28,13 +28,16 @@ class RegisterUseCase
     |--------------------------------------------------------------------------
     */
 
-    public function execute(RegisterDTO $dto): void
+    public function execute(RegisterDTO $dto): UserEntity
     {
         $findEmail = $this->repository->findByEmail($dto->email->value());
 
-        if (!$findEmail) {
-            throw new InvalidCredentialsException('The email or password you entered is incorrect.');
+        if ($findEmail) {
+            throw new InvalidCredentialsException(
+                'The email is already registered.'
+            );
         }
+
         $hashedPassword = $this->passwordHasher->hashPassword($dto->password);
 
         $user = UserEntity::register(
@@ -43,6 +46,6 @@ class RegisterUseCase
             $hashedPassword,
         );
 
-        $this->repository->create($user);
+        return $this->repository->create($user);
     }
 }
