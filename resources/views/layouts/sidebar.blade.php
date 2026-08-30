@@ -198,7 +198,7 @@
 
         {{-- Clinical --}}
         <details
-            class="group">
+            class="group" {{ request()->routeIs('patients.*') ? 'open': '' }}>
 
             <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
 
@@ -225,9 +225,17 @@
 
             <div class="mt-2 space-y-1">
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
+                {{-- Departments --}}
+                <a
+                    href="{{ route('patients.index') }}"
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+                    {{ request()->routeIs('patients.*')
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
                     Patients
-                </span>
+
+                </a>
 
                 <span class="block rounded-xl px-4 py-3 text-slate-500">
                     Appointments
@@ -298,21 +306,21 @@
     {{-- Authenticated User --}}
     @auth
 
-        <div class="shrink-0 border-t border-slate-800 p-4">
+    <div class="shrink-0 border-t border-slate-800 p-4">
 
-            <div class="rounded-xl bg-slate-800 p-4">
+        <div class="rounded-xl bg-slate-800 p-4">
 
-                <p class="truncate font-semibold text-white">
-                    {{ auth()->user()->email }}
-                </p>
+            <p class="truncate font-semibold text-white">
+                {{ auth()->user()->email }}
+            </p>
 
-                <p class="mt-1 truncate text-sm text-slate-400">
-                    {{ auth()->user()->name }}
-                </p>
-
-            </div>
+            <p class="mt-1 truncate text-sm text-slate-400">
+                {{ auth()->user()->name }}
+            </p>
 
         </div>
+
+    </div>
 
     @endauth
 
