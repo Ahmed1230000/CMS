@@ -32,15 +32,14 @@ new #[Layout('layouts.dashboard')] class extends Component
     {
         try {
             $this->deletePatientUseCase->execute($id);
-              unset($this->patients);
+            unset($this->patients);
 
-             session()->flash(
+            session()->flash(
                 'success',
                 'Patient deleted successfully.'
             );
         } catch (\Exception $e) {
-                        $this->handleException($exception);
-
+            $this->handleException($e);
         }
     }
 };
