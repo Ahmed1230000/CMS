@@ -61,4 +61,10 @@ class DepartmentEloquentRepository implements DepartmentRepositoryInterface
 
         return DepartmentMapper::toEntity($department);
     }
+
+    public function find(int $id): ?DepartmentEntity
+    {
+        $department = Department::find($id);
+        return $department ? DepartmentMapper::toEntity($department) : null;
+    }
 }

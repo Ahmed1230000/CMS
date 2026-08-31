@@ -143,7 +143,7 @@ new #[Layout('layouts.dashboard')] class extends Component
                     </td>
 
                     <td class="px-6 py-4 text-slate-600">
-                        {{ $hr->email }}
+                        {{ $hr->hospital_email }}
                     </td>
 
                     <td class="px-6 py-4 text-slate-600">

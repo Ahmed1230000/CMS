@@ -3,8 +3,8 @@
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Hr\DTOs\Hr\HrDTO;
 use App\Domains\Hr\Entities\Hr\HrEntity;
+use App\Domains\Hr\Repositories\Contracts\Hr\HrRepositoryInterface;
 use App\Domains\Hr\UseCases\Hr\UpdateHrUseCase;
-use App\Domains\Hr\UseCases\ShowHrUseCase\ShowHrUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -12,9 +12,8 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
 
-    protected ShowHrUseCase $showHrUseCase;
-
     protected UpdateHrUseCase $updateHrUseCase;
+    protected HrRepositoryInterface $hrRepositoryInterface;
 
     public int $hr_id;
 
@@ -41,18 +40,19 @@ new #[Layout('layouts.dashboard')] class extends Component
     public bool $is_active = true;
 
     public function boot(
-        ShowHrUseCase $showHrUseCase,
-        UpdateHrUseCase $updateHrUseCase
+        UpdateHrUseCase $updateHrUseCase,
+        HrRepositoryInterface $hrRepositoryInterface,
+
     ): void {
-        $this->showHrUseCase = $showHrUseCase;
         $this->updateHrUseCase = $updateHrUseCase;
+        $this->hrRepositoryInterface = $hrRepositoryInterface;
     }
 
     public function mount(int $id): void
     {
         $this->hr_id = $id;
 
-        $hr = $this->showHrUseCase->execute($id);
+        $hr = $this->hrRepositoryInterface->find($id);
 
         $this->employee_number = $hr->employee_number;
         $this->name = $hr->name;
@@ -161,7 +161,7 @@ new #[Layout('layouts.dashboard')] class extends Component
         }
 
         try {
-            $hrEntity = $this->showHrUseCase->execute(
+            $hrEntity = $this->hrRepositoryInterface->find(
                 $this->hr_id
             );
 

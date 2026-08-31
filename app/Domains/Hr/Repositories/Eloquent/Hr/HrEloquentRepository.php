@@ -2,6 +2,8 @@
 
 namespace App\Domains\Hr\Repositories\Eloquent\Hr;
 
+use App\Domains\Hr\DTOs\Hr\HrIndexDTO;
+use App\Domains\Hr\DTOs\Hr\HrShowDTO;
 use App\Domains\Hr\Entities\Hr\HrEntity;
 use App\Domains\Hr\Mapper\HrMapper;
 use App\Domains\Hr\Repositories\Contracts\Hr\HrRepositoryInterface;
@@ -12,13 +14,33 @@ class HrEloquentRepository implements HrRepositoryInterface
 {
     public function index()
     {
-        return (new HrQueryBuilder)->query()->paginate(10);
+        return (new HrQueryBuilder)->indexQuery()->paginate(10)->through(fn($hr) => HrIndexDTO::fromModel($hr));
     }
 
-    public function show(int $id): HrEntity
+    public function show(int $id)
     {
-        $hr = (new HrQueryBuilder)->query()->findOrFail($id);
-        return HrMapper::toEntity($hr);
+        $hr = (new HrQueryBuilder)->showQuery($id);
+        return HrShowDTO::fromArray([
+            'id' => $hr->id,
+            'user_id' => $hr->user_id,
+            'name' => $hr->name,
+            'employee_number' => $hr->employee_number,
+            'email' => $hr->email,
+            'phone' => $hr->phone,
+            'gender' => $hr->gender,
+            'date_of_birth' => $hr->date_of_birth,
+            'national_id' => $hr->national_id,
+            'address' => $hr->address,
+            'hire_date' => $hr->hire_date,
+            'job_title' => $hr->job_title,
+            'is_active' => $hr->is_active,
+
+            'created_by' => $hr->created_by,
+            'creator_name' => $hr->creator?->name ?? 'Unknown',
+
+            'created_at' => $hr->created_at,
+            'updated_at' => $hr->updated_at,
+        ]);
     }
 
 
@@ -68,5 +90,11 @@ class HrEloquentRepository implements HrRepositoryInterface
     {
         $hr = Hr::findOrFail($id);
         $hr->delete();
+    }
+
+    public function find(int $id): HrEntity
+    {
+        $hr = Hr::findOrFail($id);
+        return HrMapper::toEntity($hr);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Hr\UseCases\ListHrsUseCase;
 
+use App\Domains\Hr\DTOs\Reads\HrReadDTO;
 use App\Domains\Hr\Repositories\Contracts\Hr\HrRepositoryInterface;
 
 
