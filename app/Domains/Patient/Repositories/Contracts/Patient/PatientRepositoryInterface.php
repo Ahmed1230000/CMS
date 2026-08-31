@@ -13,8 +13,9 @@ interface PatientRepositoryInterface
      */
 
     public function index();
-    public function show(int $id): PatientEntity;
+    public function show(int $id);
     public function create(PatientEntity $patientEntity): PatientEntity;
     public function update(PatientEntity $patientEntity): PatientEntity;
     public function delete(int $id): void;
+    public function find(int $id): ?PatientEntity;
 }

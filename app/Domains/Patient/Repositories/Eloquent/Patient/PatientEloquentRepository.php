@@ -2,23 +2,52 @@
 
 namespace App\Domains\Patient\Repositories\Eloquent\Patient;
 
+use App\Domains\Patient\DTOs\Patient\PatientListDTO;
+use App\Domains\Patient\DTOs\Patient\PatientShowDTO;
 use App\Domains\Patient\Entities\Patient\PatientEntity;
 use App\Domains\Patient\Mapper\PatientMapper;
 use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
+use App\Infrastructure\QueryBuilder\Patient\PatientQueryBuilder;
 use App\Models\Patient;
 
 class PatientEloquentRepository implements PatientRepositoryInterface
 {
     public function index()
     {
-        return Patient::paginate(10);
+        return (new PatientQueryBuilder())->queryIndex()->paginate(10)->through(fn($patient) => PatientListDTO::fromArray([
+            'id'             => $patient->id,
+            'patient_number' => $patient->patient_number,
+            'name'           => $patient->name,
+            'phone'          => $patient->phone,
+            'gender'         => $patient->gender,
+            'is_active'      => $patient->is_active,
+        ]));
     }
 
-    public function show(int $id): PatientEntity
+    public function show(int $id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = (new PatientQueryBuilder())->queryShow($id);
 
-        return PatientMapper::toEntity($patient);
+        return PatientShowDTO::fromArray([
+            'id' => $patient->id,
+            'patient_number' => $patient->patient_number,
+            'name' => $patient->name,
+            'phone' => $patient->phone,
+            'email' => $patient->email,
+            'gender' => $patient->gender,
+            'date_of_birth' => $patient->date_of_birth,
+            'national_id' => $patient->national_id,
+            'address' => $patient->address,
+            'is_active' => $patient->is_active,
+
+            'user_name' => $patient->user?->name,
+            'user_email' => $patient->user?->email,
+
+            'creator_name' => $patient->creator?->name ?? '',
+
+            'created_at' => $patient->created_at,
+            'updated_at' => $patient->updated_at,
+        ]);
     }
 
     public function create(PatientEntity $patientEntity): PatientEntity
@@ -63,5 +92,12 @@ class PatientEloquentRepository implements PatientRepositoryInterface
         $patient = Patient::findOrFail($id);
 
         $patient->delete();
+    }
+
+    public function find(int $id): ?PatientEntity
+    {
+        $patient = Patient::find($id);
+
+        return $patient ? PatientMapper::toEntity($patient) : null;
     }
 }

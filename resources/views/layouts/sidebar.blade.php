@@ -198,7 +198,7 @@
 
         {{-- Clinical --}}
         <details
-            class="group" {{ request()->routeIs('patients.*') ? 'open': '' }}>
+            class="group" {{ request()->routeIs('patients.*','appointments.*') ? 'open': '' }}>
 
             <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
 
@@ -225,7 +225,7 @@
 
             <div class="mt-2 space-y-1">
 
-                {{-- Departments --}}
+                {{-- Patients --}}
                 <a
                     href="{{ route('patients.index') }}"
                     class="flex items-center rounded-xl px-4 py-3 font-medium transition
@@ -236,10 +236,17 @@
                     Patients
 
                 </a>
+                {{-- Appointments --}}
+                <a
+                    href="{{ route('appointments.index') }}"
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+                    {{ request()->routeIs('appointments.*')
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
                     Appointments
-                </span>
+
+                </a>
 
                 <span class="block rounded-xl px-4 py-3 text-slate-500">
                     Medical Records

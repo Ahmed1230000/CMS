@@ -2,9 +2,12 @@
 
 namespace App\Domains\Doctor\Repositories\Eloquent\Doctor;
 
+use App\Domains\Doctor\DTOs\Doctor\DoctorListDTO;
+use App\Domains\Doctor\DTOs\Doctor\DoctorShowDTO;
 use App\Domains\Doctor\Entities\Doctor\DoctorEntity;
 use App\Domains\Doctor\Mapper\DoctorMapper;
 use App\Domains\Doctor\Repositories\Contracts\Doctor\DoctorRepositoryInterface;
+use App\Infrastructure\QueryBuilder\Doctor\DoctorQueryBuilder;
 use App\Models\Doctor;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -12,14 +15,43 @@ class DoctorEloquentRepository implements DoctorRepositoryInterface
 {
     public function index()
     {
-        return  Doctor::paginate(10);
+        return (new DoctorQueryBuilder)
+            ->queryIndex()
+            ->paginate(10)
+            ->through(
+                fn($doctor) => DoctorListDTO::fromArray([
+                    'id' => $doctor->id,
+                    'name' => $doctor->user?->name ?? '',
+                    'license_number' => $doctor->license_number,
+                    'specialization' => $doctor->specialization,
+                    'phone' => $doctor->phone,
+                    'email' => $doctor->email,
+                    'department_name' => $doctor->department?->name ?? '',
+                    'creator_name' => $doctor->creator?->name ?? '',
+                    'is_active' => $doctor->is_active,
+                ])
+            );
     }
 
-    public function show(int $id): DoctorEntity
+    public function show(int $id)
     {
-        $doctor = Doctor::findOrFail($id);
+        $doctor = (new DoctorQueryBuilder())->queryShow($id);
 
-        return DoctorMapper::toEntity($doctor);
+        return DoctorShowDTO::fromArray([
+            'id' => $doctor->id,
+            'name' => $doctor->user?->name ?? '',
+            'user_id' => $doctor->user_id,
+            'license_number' => $doctor->license_number,
+            'specialization' => $doctor->specialization,
+            'phone' => $doctor->phone,
+            'email' => $doctor->email,
+            'department_name' => $doctor->department?->name ?? '',
+            'creator_name' => $doctor->creator?->name ?? '',
+            'bio' => $doctor->bio,
+            'is_active' => $doctor->is_active,
+            'created_at' => $doctor->created_at,
+            'updated_at' => $doctor->updated_at,
+        ]);
     }
 
     public function create(DoctorEntity $doctorEntity): DoctorEntity
@@ -61,5 +93,12 @@ class DoctorEloquentRepository implements DoctorRepositoryInterface
         $doctor = Doctor::findOrFail($id);
 
         $doctor->delete();
+    }
+
+    public function find(int $id): ?DoctorEntity
+    {
+        $doctor = Doctor::find($id);
+
+        return $doctor ? DoctorMapper::toEntity($doctor) : null;
     }
 }

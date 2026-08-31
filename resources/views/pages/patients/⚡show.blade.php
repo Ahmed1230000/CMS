@@ -24,7 +24,7 @@ new #[Layout('layouts.dashboard')] class extends Component
     }
 
     #[Computed]
-    public function patient(): PatientEntity
+    public function patient()
     {
         return $this->showPatientUseCase->execute(
             $this->patient_id
@@ -239,7 +239,7 @@ new #[Layout('layouts.dashboard')] class extends Component
                 </p>
 
                 <p class="mt-2 text-lg font-semibold text-slate-800">
-                    #{{ $this->patient->created_by }}
+                    #{{ $this->patient->creator_name }}
                 </p>
 
             </div>

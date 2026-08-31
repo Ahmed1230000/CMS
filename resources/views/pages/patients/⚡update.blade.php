@@ -3,6 +3,7 @@
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Patient\DTOs\Patient\PatientDTO;
 use App\Domains\Patient\Entities\Patient\PatientEntity;
+use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
 use App\Domains\Patient\UseCases\Patient\UpdatePatientUseCase;
 use App\Domains\Patient\UseCases\ShowPatientUseCase\ShowPatientUseCase;
 use Livewire\Attributes\Layout;
@@ -12,9 +13,9 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
 
-    protected ShowPatientUseCase $showPatientUseCase;
 
     protected UpdatePatientUseCase $updatePatientUseCase;
+    protected PatientRepositoryInterface $patientRepositoryInterface;
 
     public int $patient_id;
 
@@ -29,18 +30,18 @@ new #[Layout('layouts.dashboard')] class extends Component
     public bool $is_active = true;
 
     public function boot(
-        ShowPatientUseCase $showPatientUseCase,
-        UpdatePatientUseCase $updatePatientUseCase
+        UpdatePatientUseCase $updatePatientUseCase,
+     PatientRepositoryInterface $patientRepositoryInterface,
     ): void {
-        $this->showPatientUseCase = $showPatientUseCase;
         $this->updatePatientUseCase = $updatePatientUseCase;
+        $this->patientRepositoryInterface = $patientRepositoryInterface;
     }
 
     public function mount(string $id): void
     {
         $this->patient_id = (int) $id;
 
-        $patient = $this->showPatientUseCase->execute(
+        $patient = $this->patientRepositoryInterface->find(
             $this->patient_id
         );
 
@@ -118,7 +119,7 @@ new #[Layout('layouts.dashboard')] class extends Component
 
         try {
 
-            $patientEntity = $this->showPatientUseCase->execute(
+            $patientEntity = $this->patientRepositoryInterface->find(
                 $this->patient_id
             );
 

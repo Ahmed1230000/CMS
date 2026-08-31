@@ -22,4 +22,5 @@ interface DepartmentRepositoryInterface
     public function delete(int $id);
 
     public function update(DepartmentEntity $departmentEntity): DepartmentEntity;
+    public function find(int $id): ?DepartmentEntity;
 }

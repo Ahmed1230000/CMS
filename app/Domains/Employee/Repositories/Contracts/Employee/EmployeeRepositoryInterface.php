@@ -13,8 +13,9 @@ interface EmployeeRepositoryInterface
      */
 
     public function index();
-    public function show(int $id): EmployeeEntity;
+    public function show(int $id);
     public function create(EmployeeEntity $employeeEntity): EmployeeEntity;
     public function update(EmployeeEntity $employeeEntity): EmployeeEntity;
     public function delete(int $id);
+    public function find(int $id): EmployeeEntity;
 }

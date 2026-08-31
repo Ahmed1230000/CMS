@@ -3,9 +3,8 @@
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Department\UseCases\ListDepartmentsUseCase\ListDepartmentsUseCase;
 use App\Domains\Doctor\DTOs\Doctor\DoctorDTO;
-use App\Domains\Doctor\Entities\Doctor\DoctorEntity;
+use App\Domains\Doctor\Repositories\Contracts\Doctor\DoctorRepositoryInterface;
 use App\Domains\Doctor\UseCases\Doctor\UpdateDoctorUseCase;
-use App\Domains\Doctor\UseCases\ShowDoctorUseCase\ShowDoctorUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -13,11 +12,12 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
 
-    protected ShowDoctorUseCase $showDoctorUseCase;
 
     protected UpdateDoctorUseCase $updateDoctorUseCase;
 
     protected ListDepartmentsUseCase $listDepartmentsUseCase;
+
+    protected DoctorRepositoryInterface $doctorRepositoryInterface;
 
     public int $doctor_id;
 
@@ -42,20 +42,20 @@ new #[Layout('layouts.dashboard')] class extends Component
     public bool $is_active = true;
 
     public function boot(
-        ShowDoctorUseCase $showDoctorUseCase,
         UpdateDoctorUseCase $updateDoctorUseCase,
-        ListDepartmentsUseCase $listDepartmentsUseCase
+        ListDepartmentsUseCase $listDepartmentsUseCase,
+        DoctorRepositoryInterface $doctorRepositoryInterface,
     ): void {
-        $this->showDoctorUseCase = $showDoctorUseCase;
         $this->updateDoctorUseCase = $updateDoctorUseCase;
         $this->listDepartmentsUseCase = $listDepartmentsUseCase;
+        $this->doctorRepositoryInterface = $doctorRepositoryInterface;
     }
 
     public function mount(int $id): void
     {
         $this->doctor_id = $id;
 
-        $doctor = $this->showDoctorUseCase->execute($id);
+        $doctor = $this->doctorRepositoryInterface->find($id);
 
         /*
         |--------------------------------------------------------------------------
@@ -160,7 +160,7 @@ new #[Layout('layouts.dashboard')] class extends Component
             |--------------------------------------------------------------------------
             */
 
-            $doctorEntity = $this->showDoctorUseCase->execute(
+            $doctorEntity = $this->doctorRepositoryInterface->find(
                 $this->doctor_id
             );
 

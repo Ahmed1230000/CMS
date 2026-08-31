@@ -15,9 +15,10 @@ interface HrRepositoryInterface
 
     public function index();
 
-    public function show(int $id): HrEntity;
+    public function show(int $id);
 
     public function create(HrEntity $hrEntity): HrEntity;
     public function update(HrEntity $hrEntity): HrEntity;
     public function delete(int $id);
+    public function find(int $id): HrEntity;
 }

@@ -13,8 +13,9 @@ interface DoctorRepositoryInterface
      */
 
     public function index();
-    public function show(int $id): DoctorEntity;
+    public function show(int $id);
     public function create(DoctorEntity $doctorEntity): DoctorEntity;
     public function update(DoctorEntity $doctorEntity): DoctorEntity;
     public function delete(int $id);
+    public function find(int $id): ?DoctorEntity;
 }

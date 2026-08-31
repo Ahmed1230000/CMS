@@ -26,12 +26,15 @@ abstract class BaseQueryBuilder
             }
 
             if (!empty($this->allowedFilters)) {
-                
-                $query->allowedFilters($this->allowedFilters);
+                foreach ($this->allowedFilters as $filter) {
+                    $query->allowedFilters($filter);
+                }
             }
 
             if (!empty($this->allowedSorts)) {
-                $query->allowedSorts($this->allowedSorts);
+                foreach ($this->allowedSorts as $sort) {
+                    $query->allowedSorts($sort);
+                }
             }
 
             return $query;

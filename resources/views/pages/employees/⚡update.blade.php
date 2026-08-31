@@ -1,10 +1,9 @@
 <?php
 
 use App\Domains\Employee\DTOs\Employee\EmployeeDTO;
-use App\Domains\Employee\Entities\Employee\EmployeeEntity;
 use App\Domains\Employee\UseCases\Employee\UpdateEmployeeUseCase;
-use App\Domains\Employee\UseCases\ShowEmplyeesUseCase\ShowEmplyeesUseCase;
 use App\Common\Traits\FlashMessageException;
+use App\Domains\Employee\Repositories\Eloquent\Employee\EmployeeEloquentRepository;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -12,9 +11,8 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
 
-    protected ShowEmplyeesUseCase $showEmplyeesUseCase;
-
     protected UpdateEmployeeUseCase $updateEmployeeUseCase;
+    protected EmployeeEloquentRepository $employeeEloquentRepository;
 
     public int $employee_id;
 
@@ -45,18 +43,18 @@ new #[Layout('layouts.dashboard')] class extends Component
     public bool $is_active = true;
 
     public function boot(
-        ShowEmplyeesUseCase $showEmplyeesUseCase,
-        UpdateEmployeeUseCase $updateEmployeeUseCase
+        UpdateEmployeeUseCase $updateEmployeeUseCase,
+        EmployeeEloquentRepository $employeeEloquentRepository,
     ): void {
-        $this->showEmplyeesUseCase = $showEmplyeesUseCase;
         $this->updateEmployeeUseCase = $updateEmployeeUseCase;
+        $this->employeeEloquentRepository = $employeeEloquentRepository;
     }
 
     public function mount(string $id): void
     {
         $this->employee_id = (int) $id;
 
-        $employee = $this->showEmplyeesUseCase->execute(
+        $employee = $this->employeeEloquentRepository->find(
             $this->employee_id
         );
 
@@ -167,7 +165,7 @@ new #[Layout('layouts.dashboard')] class extends Component
         }
 
         try {
-            $employeeEntity = $this->showEmplyeesUseCase->execute(
+            $employeeEntity = $this->employeeEloquentRepository->find(
                 $this->employee_id
             );
 
