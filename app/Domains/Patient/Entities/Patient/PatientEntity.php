@@ -103,4 +103,8 @@ class PatientEntity
             deleted_at: $this->deleted_at,
         );
     }
+    public function isActive(): bool
+    {
+        return $this->is_active;
+    }
 }
