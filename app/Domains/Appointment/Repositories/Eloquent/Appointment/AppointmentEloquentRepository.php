@@ -5,10 +5,12 @@ namespace App\Domains\Appointment\Repositories\Eloquent\Appointment;
 use App\Domains\Appointment\DTOs\Appointment\AppointmentListDTO;
 use App\Domains\Appointment\DTOs\Appointment\AppointmentShowDTO;
 use App\Domains\Appointment\Entities\Appointment\AppointmentEntity;
+use App\Domains\Appointment\Enums\AppointmentStatusEnum;
 use App\Domains\Appointment\Mapper\AppointmentMapper;
 use App\Domains\Appointment\Repositories\Contracts\Appointment\AppointmentRepositoryInterface;
 use App\Infrastructure\QueryBuilder\Appointment\AppointmentQueryBuilder;
 use App\Models\Appointment;
+use Illuminate\Support\Carbon;
 
 class AppointmentEloquentRepository implements AppointmentRepositoryInterface
 {
@@ -47,6 +49,8 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
             'id' => $appointment->id,
 
             'doctor_name' => $appointment->doctor?->user?->name ?? '',
+
+            'doctor_id' => $appointment->doctor_id,
 
             'patient_name' => $appointment->patient?->name ?? '',
 
@@ -104,6 +108,7 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
             'end_time'         => $appointmentEntity->end_time,
             'reason'           => $appointmentEntity->reason,
             'notes'            => $appointmentEntity->notes,
+            'status'           => $appointmentEntity->status->value,
         ]);
 
         return AppointmentMapper::toEntity(
@@ -122,5 +127,26 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
     {
         $appointment = Appointment::findOrFail($id);
         return AppointmentMapper::toEntity($appointment);
+    }
+
+    public function hasConflict(
+        int $doctorId,
+        Carbon $appointmentDate,
+        Carbon $startTime,
+        Carbon $endTime,
+    ) {
+        return Appointment::query()
+            ->where('doctor_id', $doctorId)
+            ->whereDate('appointment_date', $appointmentDate)
+            ->whereIn(
+                'status',
+                [
+                    AppointmentStatusEnum::SCHEDULED,
+                    AppointmentStatusEnum::CONFIRMED,
+                ]
+            )->where(function ($query) use ($startTime, $endTime) {
+                $query->where('start_time', '<', $endTime)
+                    ->where('end_time', '>', $startTime);
+            })->exists();
     }
 }

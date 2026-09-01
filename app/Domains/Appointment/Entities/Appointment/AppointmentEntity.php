@@ -101,4 +101,80 @@ class AppointmentEntity
             deleted_at: $this->deleted_at,
         );
     }
+
+    public function  confirm(): self
+    {
+        if ($this->status !== AppointmentStatusEnum::SCHEDULED) {
+            throw new \DomainException(
+                'Only scheduled appointments can be confirmed.'
+            );
+        }
+
+        return new self(
+            id: $this->id,
+            doctor_id: $this->doctor_id,
+            patient_id: $this->patient_id,
+            department_id: $this->department_id,
+            appointment_date: $this->appointment_date,
+            start_time: $this->start_time,
+            end_time: $this->end_time,
+            status: AppointmentStatusEnum::CONFIRMED,
+            reason: $this->reason,
+            notes: $this->notes,
+            created_by: $this->created_by,
+            created_at: $this->created_at,
+            updated_at: Carbon::now(),
+            deleted_at: $this->deleted_at,
+        );
+    }
+    public function complete(): self
+    {
+        if ($this->status !== AppointmentStatusEnum::SCHEDULED && $this->status !== AppointmentStatusEnum::CONFIRMED) {
+            throw new \DomainException(
+                'Only scheduled Or confirmed appointments can be confirmed.'
+            );
+        }
+
+        return new self(
+            id: $this->id,
+            doctor_id: $this->doctor_id,
+            patient_id: $this->patient_id,
+            department_id: $this->department_id,
+            appointment_date: $this->appointment_date,
+            start_time: $this->start_time,
+            end_time: $this->end_time,
+            status: AppointmentStatusEnum::COMPLETED,
+            reason: $this->reason,
+            notes: $this->notes,
+            created_by: $this->created_by,
+            created_at: $this->created_at,
+            updated_at: Carbon::now(),
+            deleted_at: $this->deleted_at,
+        );
+    }
+    public function cancel(): self
+    {
+        if ($this->status !== AppointmentStatusEnum::SCHEDULED && $this->status !== AppointmentStatusEnum::CONFIRMED) {
+            throw new \DomainException(
+                'Only scheduled or confirmed appointments can be cancelled.'
+            );
+        }
+
+        return new self(
+            id: $this->id,
+            doctor_id: $this->doctor_id,
+            patient_id: $this->patient_id,
+            department_id: $this->department_id,
+            appointment_date: $this->appointment_date,
+            start_time: $this->start_time,
+            end_time: $this->end_time,
+            status: AppointmentStatusEnum::CANCELLED,
+            reason: $this->reason,
+            notes: $this->notes,
+            created_by: $this->created_by,
+            created_at: $this->created_at,
+            updated_at: Carbon::now(),
+            deleted_at: $this->deleted_at,
+        );
+    }
 }

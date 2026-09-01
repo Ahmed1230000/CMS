@@ -4,6 +4,7 @@ namespace App\Domains\Appointment\UseCases\Appointment;
 
 use App\Domains\Appointment\DTOs\Appointment\AppointmentDTO;
 use App\Domains\Appointment\Entities\Appointment\AppointmentEntity;
+use App\Domains\Appointment\Exceptions\Appointment\DoctorHasAppointmentConflictException;
 use App\Domains\Appointment\Exceptions\Appointment\DoctorNotFoundException;
 use App\Domains\Appointment\Exceptions\Appointment\InactiveDepartmentException;
 use App\Domains\Appointment\Exceptions\Appointment\InactiveDoctorException;
@@ -70,6 +71,16 @@ class CreateAppointmentUseCase
         if (!$department->isActive()) {
             throw new InactiveDepartmentException(
                 'The selected department is inactive and cannot be used for appointments.'
+            );
+        }
+        if ($this->repository->hasConflict(
+            doctorId: $doctor->id,
+            appointmentDate: $dto->appointment_date,
+            startTime: $dto->start_time,
+            endTime: $dto->end_time,
+        )) {
+            throw new DoctorHasAppointmentConflictException(
+                'The selected doctor already has an appointment during the selected time.'
             );
         }
 
