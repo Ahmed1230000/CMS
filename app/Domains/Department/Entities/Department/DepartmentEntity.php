@@ -79,4 +79,9 @@ class DepartmentEntity
             creator: $this->creator
         );
     }
+
+    public function isActive(): bool 
+    {
+        return $this->is_active;
+    }
 }

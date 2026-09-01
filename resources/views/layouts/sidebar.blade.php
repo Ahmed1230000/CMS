@@ -187,7 +187,7 @@
                         ? 'bg-blue-600 text-white'
                         : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
 
-                    Employee
+                    Employees
 
                 </a>
 

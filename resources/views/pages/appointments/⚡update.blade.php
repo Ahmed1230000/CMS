@@ -4,6 +4,9 @@ use App\Domains\Appointment\DTOs\Appointment\AppointmentDTO;
 use App\Domains\Appointment\Entities\Appointment\AppointmentEntity;
 use App\Domains\Appointment\Repositories\Contracts\Appointment\AppointmentRepositoryInterface;
 use App\Domains\Appointment\UseCases\Appointment\UpdateAppointmentUseCase;
+use App\Domains\Appointment\UseCases\CancelAppointmentUseCase\CancelAppointmentUseCase;
+use App\Domains\Appointment\UseCases\CompleteAppointmentUseCase\CompleteAppointmentUseCase;
+use App\Domains\Appointment\UseCases\ConfirmAppointmentUseCase\ConfirmAppointmentUseCase;
 use App\Domains\Appointment\UseCases\ShowAppointmentUseCase\ShowAppointmentUseCase;
 use App\Domains\Doctor\Repositories\Contracts\Doctor\DoctorRepositoryInterface;
 use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
@@ -25,6 +28,12 @@ new #[Layout('layouts.dashboard')] class extends Component
     protected DepartmentRepositoryInterface $departmentRepository;
 
     protected AppointmentRepositoryInterface $appointmentRepositoryInterface;
+
+    protected ConfirmAppointmentUseCase $confirmAppointmentUseCase;
+
+    protected CancelAppointmentUseCase $cancelAppointmentUseCase;
+
+    protected CompleteAppointmentUseCase $completeAppointmentUseCase;
 
     public int $appointment_id;
 
@@ -51,6 +60,9 @@ new #[Layout('layouts.dashboard')] class extends Component
         PatientRepositoryInterface $patientRepository,
         DepartmentRepositoryInterface $departmentRepository,
         AppointmentRepositoryInterface $appointmentRepositoryInterface,
+        ConfirmAppointmentUseCase $confirmAppointmentUseCase,
+        CancelAppointmentUseCase $cancelAppointmentUseCase,
+        CompleteAppointmentUseCase $completeAppointmentUseCase,
 
     ): void {
         $this->showAppointmentUseCase = $showAppointmentUseCase;
@@ -64,6 +76,12 @@ new #[Layout('layouts.dashboard')] class extends Component
         $this->departmentRepository = $departmentRepository;
 
         $this->appointmentRepositoryInterface = $appointmentRepositoryInterface;
+
+        $this->confirmAppointmentUseCase = $confirmAppointmentUseCase;
+
+        $this->cancelAppointmentUseCase = $cancelAppointmentUseCase;
+
+        $this->completeAppointmentUseCase = $completeAppointmentUseCase;
     }
 
     public function mount(string $id): void
@@ -158,6 +176,66 @@ new #[Layout('layouts.dashboard')] class extends Component
             );
         } catch (\Throwable $exception) {
 
+            $this->addError(
+                'appointment',
+                $exception->getMessage()
+            );
+        }
+    }
+    public function confirm(): void
+    {
+        try {
+            $this->confirmAppointmentUseCase->execute(
+                $this->appointment_id
+            );
+
+            unset($this->appointment);
+
+            session()->flash(
+                'success',
+                'Appointment confirmed successfully.'
+            );
+        } catch (\Throwable $exception) {
+            $this->addError(
+                'appointment',
+                $exception->getMessage()
+            );
+        }
+    }
+    public function cancelAppointment(): void
+    {
+        try {
+            $this->cancelAppointmentUseCase->execute(
+                $this->appointment_id
+            );
+
+            unset($this->appointment);
+
+            session()->flash(
+                'success',
+                'Appointment cancelled successfully.'
+            );
+        } catch (\Throwable $exception) {
+            $this->addError(
+                'appointment',
+                $exception->getMessage()
+            );
+        }
+    }
+    public function complete(): void
+    {
+        try {
+            $this->completeAppointmentUseCase->execute(
+                $this->appointment_id
+            );
+
+            unset($this->appointment);
+
+            session()->flash(
+                'success',
+                'Appointment completed successfully.'
+            );
+        } catch (\Throwable $exception) {
             $this->addError(
                 'appointment',
                 $exception->getMessage()
@@ -422,32 +500,122 @@ new #[Layout('layouts.dashboard')] class extends Component
             </div>
 
 
-            {{-- Actions --}}
-            <div class="flex items-center justify-end gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-8 py-5">
+            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-8 py-5">
 
-                <a
-                    href="{{ route('appointments.show', ['id' => $appointment_id]) }}"
-                    wire:navigate
-                    class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 transition hover:bg-white">
+                {{-- Status Actions --}}
+                <div class="flex items-center gap-3">
 
-                    Cancel
+                    @switch($this->appointment->status)
 
-                </a>
+                    @case('scheduled')
 
-                <button
-                    type="submit"
-                    wire:loading.attr="disabled"
-                    class="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50">
+                    <button
+                        type="button"
+                        wire:click="confirm"
+                        wire:confirm="Are you sure you want to confirm this appointment?"
+                        wire:loading.attr="disabled"
+                        class="rounded-xl bg-indigo-600 px-5 py-3 font-medium text-white transition hover:bg-indigo-700 disabled:opacity-50">
 
-                    <span wire:loading.remove>
-                        Update Appointment
+                        Confirm
+
+                    </button>
+
+                    <button
+                        type="button"
+                        wire:click="cancelAppointment"
+                        wire:confirm="Are you sure you want to cancel this appointment?"
+                        wire:loading.attr="disabled"
+                        class="rounded-xl bg-red-600 px-5 py-3 font-medium text-white transition hover:bg-red-700 disabled:opacity-50">
+
+                        Cancel Appointment
+
+                    </button>
+
+                    @break
+
+                    @case('confirmed')
+
+                    <button
+                        type="button"
+                        wire:click="complete"
+                        wire:confirm="Are you sure you want to mark this appointment as completed?"
+                        wire:loading.attr="disabled"
+                        class="rounded-xl bg-green-600 px-5 py-3 font-medium text-white transition hover:bg-green-700 disabled:opacity-50">
+
+                        Complete
+
+                    </button>
+
+                    <button
+                        type="button"
+                        wire:click="cancelAppointment"
+                        wire:confirm="Are you sure you want to cancel this appointment?"
+                        wire:loading.attr="disabled"
+                        class="rounded-xl bg-red-600 px-5 py-3 font-medium text-white transition hover:bg-red-700 disabled:opacity-50">
+
+                        Cancel Appointment
+
+                    </button>
+
+                    @break
+
+                    @case('completed')
+
+                    <span class="rounded-xl bg-green-100 px-5 py-3 text-sm font-medium text-green-700">
+                        Appointment Completed
                     </span>
 
-                    <span wire:loading>
-                        Updating...
+                    @break
+
+                    @case('cancelled')
+
+                    <span class="rounded-xl bg-red-100 px-5 py-3 text-sm font-medium text-red-700">
+                        Appointment Cancelled
                     </span>
 
-                </button>
+                    @break
+
+                    @case('no_show')
+
+                    <span class="rounded-xl bg-amber-100 px-5 py-3 text-sm font-medium text-amber-700">
+                        No Show
+                    </span>
+
+                    @break
+
+                    @endswitch
+
+                </div>
+
+
+                {{-- Normal Actions --}}
+                <div class="flex items-center gap-4">
+
+                    <a
+                        href="{{ route('appointments.show', ['id' => $appointment_id]) }}"
+                        wire:navigate
+                        class="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 transition hover:bg-white">
+
+                        Cancel
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        wire:loading.attr="disabled"
+                        class="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50">
+
+                        <span wire:loading.remove>
+                            Update Appointment
+                        </span>
+
+                        <span wire:loading>
+                            Updating...
+                        </span>
+
+                    </button>
+
+                </div>
 
             </div>
 
