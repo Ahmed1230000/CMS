@@ -18,4 +18,6 @@ interface PatientRepositoryInterface
     public function update(PatientEntity $patientEntity): PatientEntity;
     public function delete(int $id): void;
     public function find(int $id): ?PatientEntity;
+
+    public function searchByPhone(string $phone);
 }

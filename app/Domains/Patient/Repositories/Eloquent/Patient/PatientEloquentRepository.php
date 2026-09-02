@@ -100,4 +100,9 @@ class PatientEloquentRepository implements PatientRepositoryInterface
 
         return $patient ? PatientMapper::toEntity($patient) : null;
     }
+
+    public function searchByPhone(string $phone)
+    {
+        return (new PatientQueryBuilder())->searchByPhone($phone)->get();
+    }
 }
