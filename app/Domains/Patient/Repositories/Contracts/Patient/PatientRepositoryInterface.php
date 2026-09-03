@@ -3,6 +3,7 @@
 namespace App\Domains\Patient\Repositories\Contracts\Patient;
 
 use App\Domains\Patient\Entities\Patient\PatientEntity;
+use Illuminate\Http\UploadedFile;
 
 interface PatientRepositoryInterface
 {
@@ -20,4 +21,7 @@ interface PatientRepositoryInterface
     public function find(int $id): ?PatientEntity;
 
     public function searchByPhone(string $phone);
+    public function addMedicalDocument(int $patientId, UploadedFile $uploadedFile, int $creatorId);
+    public function getMedicalDocuments(int $patientId);
+    public function updateMedicalDocument(int $patientId, int $mediaId, UploadedFile $uploadedFile): void;
 }

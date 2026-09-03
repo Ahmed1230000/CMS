@@ -9,6 +9,7 @@ use App\Domains\Patient\Mapper\PatientMapper;
 use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
 use App\Infrastructure\QueryBuilder\Patient\PatientQueryBuilder;
 use App\Models\Patient;
+use Illuminate\Http\UploadedFile;
 
 class PatientEloquentRepository implements PatientRepositoryInterface
 {
@@ -104,5 +105,43 @@ class PatientEloquentRepository implements PatientRepositoryInterface
     public function searchByPhone(string $phone)
     {
         return (new PatientQueryBuilder())->searchByPhone($phone)->get();
+    }
+
+    public function addMedicalDocument(int $patientId, UploadedFile $uploadedFile, int $creatorId)
+    {
+        $patient = Patient::findOrFail($patientId);
+
+        $patient->addMedia($uploadedFile)
+            ->withCustomProperties(['creator_id' => $creatorId])
+            ->toMediaCollection('medical_documents');
+    }
+    public function getMedicalDocuments(int $patientId)
+    {
+        $patient = Patient::findOrFail($patientId);
+
+        return $patient->medicalDocuments()->get();
+    }
+
+    public function updateMedicalDocument(
+        int $patientId,
+        int $mediaId,
+        UploadedFile $uploadedFile
+    ): void {
+        $patient = Patient::findOrFail($patientId);
+
+        $media = $patient->media()
+            ->where('id', $mediaId)
+            ->where('collection_name', 'medical_documents')
+            ->firstOrFail();
+
+        $creatorId = $media->getCustomProperty('creator_id');
+
+        $media->delete();
+
+        $patient->addMedia($uploadedFile)
+            ->withCustomProperties([
+                'creator_id' => $creatorId,
+            ])
+            ->toMediaCollection('medical_documents');
     }
 }

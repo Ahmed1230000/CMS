@@ -12,7 +12,8 @@ class PatientQueryBuilder extends BaseQueryBuilder
 
     protected array $allowedIncludes = [
         'user',
-        'creator'
+        'creator',
+        'medicalDocuments',
     ];
 
     protected array $allowedFilters = [

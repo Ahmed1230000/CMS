@@ -3,29 +3,47 @@
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Patient\DTOs\Patient\PatientDTO;
 use App\Domains\Patient\UseCases\Patient\CreatePatientUseCase;
+use App\Domains\Patient\UseCases\UploadMedicalDocumentUseCase\AddMedicalDocumentUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 new #[Layout('layouts.dashboard')] class extends Component
 {
     use FlashMessageException;
+    use WithFileUploads;
 
     protected CreatePatientUseCase $createPatientUseCase;
 
+    protected AddMedicalDocumentUseCase $addMedicalDocumentUseCase;
+
     public string $patient_number = '';
+
     public string $name = '';
+
     public string $phone = '';
+
     public string $email = '';
+
     public string $gender = '';
+
     public string $date_of_birth = '';
+
     public string $national_id = '';
+
     public string $address = '';
+
     public bool $is_active = true;
 
+    public array $documents = [];
+
     public function boot(
-        CreatePatientUseCase $createPatientUseCase
+        CreatePatientUseCase $createPatientUseCase,
+        AddMedicalDocumentUseCase $addMedicalDocumentUseCase
     ): void {
         $this->createPatientUseCase = $createPatientUseCase;
+
+        $this->addMedicalDocumentUseCase = $addMedicalDocumentUseCase;
     }
 
     protected function rules(): array
@@ -82,24 +100,47 @@ new #[Layout('layouts.dashboard')] class extends Component
             'is_active' => [
                 'boolean',
             ],
+
+            'documents' => [
+                'nullable',
+                'array',
+            ],
+
+            'documents.*' => [
+                'file',
+                'max:10240',
+                'mimes:pdf,jpg,jpeg,png',
+            ],
         ];
     }
 
     public function create()
     {
-        $validation = $this->validate($this->rules());
+        $validation = $this->validate(
+            $this->rules()
+        );
 
         try {
-            $dto = PatientDTO::fromArray($validation);
+            $patient = $this->createPatientUseCase->execute(
+                PatientDTO::fromArray($validation)
+            );
 
-            $this->createPatientUseCase->execute($dto);
+            foreach ($this->documents as $document) {
+                $this->uploadMedicalDocumentUseCase->execute(
+                    patientId: $patient->id,
+                    uploadedFile: $document,
+                    creatorId: auth()->id(),
+                );
+            }
 
             session()->flash(
                 'success',
                 'Patient created successfully.'
             );
 
-            return redirect()->route('patients.index');
+            return redirect()->route(
+                'patients.index'
+            );
         } catch (\Throwable $exception) {
             $this->handleException($exception);
         }
@@ -155,197 +196,201 @@ new #[Layout('layouts.dashboard')] class extends Component
 
 
             {{-- Fields --}}
-            <div class="grid grid-cols-1 gap-6 p-8 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-6 p-8">
 
-                {{-- Patient Number --}}
-                <div>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Patient Number
-                    </label>
+                    {{-- Patient Number --}}
+                    <div>
 
-                    <input
-                        type="text"
-                        wire:model.live="patient_number"
-                        placeholder="e.g. PAT-001"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Patient Number
+                        </label>
 
-                    @error('patient_number')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                        <input
+                            type="text"
+                            wire:model.live="patient_number"
+                            placeholder="e.g. PAT-001"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
-                </div>
+                        @error('patient_number')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
 
-
-                {{-- Name --}}
-                <div>
-
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        wire:model.live="name"
-                        placeholder="e.g. Ahmed Mahmoud"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
-
-                    @error('name')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
-
-                </div>
+                    </div>
 
 
-                {{-- Phone --}}
-                <div>
+                    {{-- Name --}}
+                    <div>
 
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Phone
-                    </label>
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Full Name
+                        </label>
 
-                    <input
-                        type="text"
-                        wire:model.live="phone"
-                        placeholder="e.g. 01012345678"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <input
+                            type="text"
+                            wire:model.live="name"
+                            placeholder="e.g. Ahmed Mahmoud"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
-                    @error('phone')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                        @error('name')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
 
-                </div>
-
-
-                {{-- Email --}}
-                <div>
-
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        wire:model.live="email"
-                        placeholder="e.g. patient@gmail.com"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
-
-                    @error('email')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
-
-                </div>
+                    </div>
 
 
-                {{-- Gender --}}
-                <div>
+                    {{-- Phone --}}
+                    <div>
 
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Gender
-                    </label>
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Phone
+                        </label>
 
-                    <select
-                        wire:model.live="gender"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <input
+                            type="text"
+                            wire:model.live="phone"
+                            placeholder="e.g. 01012345678"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
-                        <option value="">
-                            Select gender
-                        </option>
+                        @error('phone')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
 
-                        <option value="male">
-                            Male
-                        </option>
-
-                        <option value="female">
-                            Female
-                        </option>
-
-                    </select>
-
-                    @error('gender')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
-
-                </div>
+                    </div>
 
 
-                {{-- Date of Birth --}}
-                <div>
+                    {{-- Email --}}
+                    <div>
 
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Date of Birth
-                    </label>
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Email
+                        </label>
 
-                    <input
-                        type="date"
-                        wire:model.live="date_of_birth"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <input
+                            type="email"
+                            wire:model.live="email"
+                            placeholder="e.g. patient@gmail.com"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
-                    @error('date_of_birth')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                        @error('email')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
 
-                </div>
-
-
-                {{-- National ID --}}
-                <div>
-
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        National ID
-                    </label>
-
-                    <input
-                        type="text"
-                        wire:model.live="national_id"
-                        placeholder="National ID"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
-
-                    @error('national_id')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
-
-                </div>
+                    </div>
 
 
-                {{-- Address --}}
-                <div>
+                    {{-- Gender --}}
+                    <div>
 
-                    <label class="mb-2 block text-sm font-medium text-slate-700">
-                        Address
-                    </label>
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Gender
+                        </label>
 
-                    <input
-                        type="text"
-                        wire:model.live="address"
-                        placeholder="Patient address"
-                        class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+                        <select
+                            wire:model.live="gender"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
-                    @error('address')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                    @enderror
+                            <option value="">
+                                Select gender
+                            </option>
+
+                            <option value="male">
+                                Male
+                            </option>
+
+                            <option value="female">
+                                Female
+                            </option>
+
+                        </select>
+
+                        @error('gender')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Date of Birth --}}
+                    <div>
+
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Date of Birth
+                        </label>
+
+                        <input
+                            type="date"
+                            wire:model.live="date_of_birth"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+
+                        @error('date_of_birth')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- National ID --}}
+                    <div>
+
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            National ID
+                        </label>
+
+                        <input
+                            type="text"
+                            wire:model.live="national_id"
+                            placeholder="National ID"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+
+                        @error('national_id')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Address --}}
+                    <div>
+
+                        <label class="mb-2 block text-sm font-medium text-slate-700">
+                            Address
+                        </label>
+
+                        <input
+                            type="text"
+                            wire:model.live="address"
+                            placeholder="Patient address"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
+
+                        @error('address')
+                        <p class="mt-1 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                    </div>
 
                 </div>
 
 
                 {{-- Active --}}
-                <div class="md:col-span-2">
+                <div>
 
                     <div class="flex items-center justify-between rounded-xl border border-slate-200 p-4">
 
@@ -370,6 +415,76 @@ new #[Layout('layouts.dashboard')] class extends Component
 
                 </div>
 
+
+                {{-- Medical Documents --}}
+                <div>
+
+                    <div class="rounded-xl border border-slate-200 p-5">
+
+                        <div class="mb-4">
+
+                            <p class="font-medium text-slate-800">
+                                Medical Documents
+                            </p>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                Optional. You can upload medical documents for this patient.
+                            </p>
+
+                        </div>
+
+                        <input
+                            type="file"
+                            wire:model="documents"
+                            multiple
+                            class="block w-full rounded-xl border border-slate-300 px-4 py-3 text-sm">
+
+
+                        <div wire:loading wire:target="documents" class="mt-3 text-sm text-blue-600">
+                            Uploading files...
+                        </div>
+
+                        @error('documents')
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                        @error('documents.*')
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+
+                        @if ($documents)
+
+                        <div class="mt-4 space-y-2">
+
+                            @foreach ($documents as $document)
+
+                            <div class="flex items-center justify-between rounded-lg bg-slate-50 px-4 py-3">
+
+                                <span class="text-sm text-slate-700">
+                                    {{ $document->getClientOriginalName() }}
+                                </span>
+
+                                <span class="text-xs text-slate-500">
+                                    {{ number_format($document->getSize() / 1024, 1) }} KB
+                                </span>
+
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
+                        @endif
+
+                    </div>
+
+                </div>
+
             </div>
 
 
@@ -388,13 +503,14 @@ new #[Layout('layouts.dashboard')] class extends Component
                 <button
                     type="submit"
                     wire:loading.attr="disabled"
+                    wire:target="create"
                     class="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50">
 
-                    <span wire:loading.remove>
+                    <span wire:loading.remove wire:target="create">
                         Create Patient
                     </span>
 
-                    <span wire:loading>
+                    <span wire:loading wire:target="create">
                         Creating...
                     </span>
 
