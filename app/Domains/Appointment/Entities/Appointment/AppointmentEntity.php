@@ -18,7 +18,7 @@ class AppointmentEntity
         public readonly AppointmentStatusEnum $status,
         public readonly ?string $reason,
         public readonly ?string $notes,
-        public readonly int $created_by,
+        public readonly ?int $created_by,
         public readonly Carbon $created_at,
         public readonly Carbon $updated_at,
         public readonly ?Carbon $deleted_at,

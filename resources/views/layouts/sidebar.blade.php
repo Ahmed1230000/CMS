@@ -258,10 +258,17 @@
                     Medical Records
 
                 </a>
+                {{-- Prescriptions --}}
+                <a
+                    href="{{ route('prescriptions.index') }}"
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+                    {{ request()->routeIs('prescriptions.*')
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
                     Prescriptions
-                </span>
+
+                </a>
 
             </div>
 

@@ -1,7 +1,8 @@
 <?php
 
-use App\Domains\Appointment\Entities\Appointment\AppointmentEntity;
 use App\Domains\Appointment\UseCases\ShowAppointmentUseCase\ShowAppointmentUseCase;
+use App\Domains\Prescription\DTOs\Prescription\PrescriptionDTO;
+use App\Domains\Prescription\UseCases\Prescription\CreatePrescriptionUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -10,12 +11,16 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     protected ShowAppointmentUseCase $showAppointmentUseCase;
 
+    protected CreatePrescriptionUseCase $createPrescriptionUseCase;
+
     public int $appointment_id;
 
     public function boot(
-        ShowAppointmentUseCase $showAppointmentUseCase
+        ShowAppointmentUseCase $showAppointmentUseCase,
+        CreatePrescriptionUseCase $createPrescriptionUseCase,
     ): void {
         $this->showAppointmentUseCase = $showAppointmentUseCase;
+        $this->createPrescriptionUseCase = $createPrescriptionUseCase;
     }
 
     public function mount(string $id): void
@@ -30,7 +35,25 @@ new #[Layout('layouts.dashboard')] class extends Component
             $this->appointment_id
         );
     }
+
+    public function createPrescription()
+    {
+        $dto = PrescriptionDTO::fromArray([
+            'patient_id'     => $this->appointment->patient_id,
+            'doctor_id'      => $this->appointment->doctor_id,
+            'appointment_id' => $this->appointment_id,
+        ]);
+
+        $prescription = $this->createPrescriptionUseCase->execute($dto);
+
+        return $this->redirectRoute(
+            'prescriptions.items.create',
+            ['prescription' => $prescription->id],
+            navigate: true
+        );
+    }
 };
+
 ?>
 
 <div>
@@ -326,6 +349,21 @@ new #[Layout('layouts.dashboard')] class extends Component
                 Update
 
             </a>
+
+            {{-- Create Prescription --}}
+            <button
+                type="button"
+                wire:click="createPrescription"
+                wire:loading.attr="disabled"
+                class="rounded-xl bg-green-600 px-6 py-3 font-medium text-white transition hover:bg-green-700 disabled:opacity-50">
+                <span wire:loading.remove wire:target="createPrescription">
+                    Create Prescription
+                </span>
+
+                <span wire:loading wire:target="createPrescription">
+                    Opening...
+                </span>
+            </button>
 
         </div>
 

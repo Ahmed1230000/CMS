@@ -8,7 +8,7 @@ class HrEntity
 {
     private function __construct(
         public readonly ?int $id,
-        public readonly int $user_id,
+        public readonly ?int $user_id,
         public readonly string $employee_number,
         public readonly string $name,
         public readonly string $phone,
@@ -20,7 +20,7 @@ class HrEntity
         public readonly Carbon $hire_date,
         public readonly string $job_title,
         public readonly bool $is_active,
-        public readonly int $created_by,
+        public readonly ?int $created_by,
         public readonly Carbon $created_at,
         public readonly Carbon $updated_at,
         public readonly ?Carbon $deleted_at,
@@ -68,7 +68,7 @@ class HrEntity
     {
         return new self(
             id: $data['id'],
-            user_id: $data['user_id'],
+            user_id: $data['user_id'] ?? null,
             employee_number: $data['employee_number'],
             name: $data['name'],
             phone: $data['phone'],
@@ -80,7 +80,7 @@ class HrEntity
             hire_date: $data['hire_date'],
             job_title: $data['job_title'],
             is_active: $data['is_active'],
-            created_by: $data['created_by'],
+            created_by: $data['created_by'] ?? null,
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
             deleted_at: $data['deleted_at'] ?? null,

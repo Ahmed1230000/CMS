@@ -17,7 +17,7 @@ class MedicalRecordMapper
             'clinical_notes'  => $medicalRecord->clinical_notes,
             'treatment_plan'  => $medicalRecord->treatment_plan,
             'status'          => $medicalRecord->status,
-            'created_by'      => $medicalRecord->created_by,
+            'created_by'      => $medicalRecord->created_by ?? null,
             'created_at'      => $medicalRecord->created_at,
             'updated_at'      => $medicalRecord->updated_at,
         ]);

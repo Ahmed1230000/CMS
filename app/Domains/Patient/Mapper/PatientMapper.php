@@ -20,7 +20,7 @@ class PatientMapper
             'national_id'    => $patient->national_id,
             'address'        => $patient->address,
             'is_active'      => $patient->is_active,
-            'created_by'     => $patient->created_by,
+            'created_by'     => $patient->created_by ?? null,
             'created_at'     => $patient->created_at,
             'updated_at'     => $patient->updated_at,
             'deleted_at'     => $patient->deleted_at,

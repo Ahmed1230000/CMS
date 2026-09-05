@@ -15,7 +15,7 @@ class MedicalRecordEntity
         public readonly ?string $clinical_notes,
         public readonly ?string $treatment_plan,
         public readonly MedicalRecordStatusEnum $status,
-        public readonly int $created_by,
+        public readonly ?int $created_by,
         public readonly Carbon $created_at,
         public readonly Carbon $updated_at,
     ) {}
@@ -30,7 +30,7 @@ class MedicalRecordEntity
             clinical_notes: $data['clinical_notes'] ?? null,
             treatment_plan: $data['treatment_plan'] ?? null,
             status: $data['status'],
-            created_by: $data['created_by'],
+            created_by: $data['created_by'] ?? null,
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
         );

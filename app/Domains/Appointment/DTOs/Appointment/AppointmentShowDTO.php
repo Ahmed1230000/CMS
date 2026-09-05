@@ -30,14 +30,14 @@ class AppointmentShowDTO
         return new self(
             id: (int) $data['id'],
 
-            doctor_name: (string) ($data['doctor_name'] ?? ''),
-            doctor_id: (int) ($data['doctor_id'] ?? ''),
+            doctor_name: (string) ($data['doctor_name']),
+            doctor_id: (int) ($data['doctor_id']),
 
-            patient_name: (string) ($data['patient_name'] ?? ''),
-            patient_id: (int) ($data['patient_id'] ?? ''),
+            patient_name: (string) ($data['patient_name']),
+            patient_id: (int) ($data['patient_id']),
 
-            department_name: (string) ($data['department_name'] ?? ''),
-            department_id: (int) ($data['department_id'] ?? ''),
+            department_name: (string) ($data['department_name']),
+            department_id: (int) ($data['department_id']),
 
             appointment_date: $data['appointment_date'] instanceof Carbon
                 ? $data['appointment_date']

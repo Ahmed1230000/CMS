@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Patient\UseCases\UploadMedicalDocumentUseCase;
+namespace App\Domains\Patient\UseCases\AddMedicalDocumentUseCase;
 
 use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
 use Illuminate\Http\UploadedFile;

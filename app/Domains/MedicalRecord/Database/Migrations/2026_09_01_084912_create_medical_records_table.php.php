@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('medical_records', function (Blueprint $table) {
             // TODO: columns
             $table->id();
-            $table->foreignId('patient_id')->nullable()->constrained()->restrictOnDelete()->nullOnDelete();
+            $table->foreignId('patient_id')->constrained()->restrictOnDelete();
 
             $table->text('chief_complaint')->nullable();
             $table->text('diagnosis')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
                 array_column(MedicalRecordStatusEnum::cases(), 'value'),
             ])->default(MedicalRecordStatusEnum::DRAFT->value);
 
-            $table->foreignId('created_by')->nullable()->constrained('users')->restrictOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
 
             $table->timestamps();
             $table->softDeletes();

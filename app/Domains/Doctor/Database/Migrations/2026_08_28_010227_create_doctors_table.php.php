@@ -11,12 +11,6 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->nullable()
-                ->unique()
-                ->constrained('users')->nullOnDelete();
-
-            $table->foreignId('department_id')->nullable()
-                ->constrained('departments')->nullOnDelete();
 
             $table->string('license_number', 100)
                 ->unique();
@@ -32,6 +26,14 @@ return new class extends Migration
 
             $table->boolean('is_active')
                 ->default(true);
+
+            $table->foreignId('user_id')->nullable()
+                ->unique()
+                ->constrained('users')
+                ->nullOnDelete();
+
+            $table->foreignId('department_id')
+                ->constrained('departments')->restrictOnDelete();
 
             $table->foreignId('created_by')->nullable()
                 ->constrained('users')->nullOnDelete();

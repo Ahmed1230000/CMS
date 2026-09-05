@@ -3,7 +3,7 @@
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Patient\DTOs\Patient\PatientDTO;
 use App\Domains\Patient\UseCases\Patient\CreatePatientUseCase;
-use App\Domains\Patient\UseCases\UploadMedicalDocumentUseCase\AddMedicalDocumentUseCase;
+use App\Domains\Patient\UseCases\AddMedicalDocumentUseCase\AddMedicalDocumentUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -125,14 +125,14 @@ new #[Layout('layouts.dashboard')] class extends Component
                 PatientDTO::fromArray($validation)
             );
 
+
             foreach ($this->documents as $document) {
-                $this->uploadMedicalDocumentUseCase->execute(
+                $this->addMedicalDocumentUseCase->execute(
                     patientId: $patient->id,
                     uploadedFile: $document,
                     creatorId: auth()->id(),
                 );
             }
-
             session()->flash(
                 'success',
                 'Patient created successfully.'

@@ -20,7 +20,7 @@ class AppointmentMapper
             'status'           => $appointment->status,
             'reason'           => $appointment->reason,
             'notes'            => $appointment->notes,
-            'created_by'       => $appointment->created_by,
+            'created_by'       => $appointment->created_by ?? null,
             'created_at'       => $appointment->created_at,
             'updated_at'       => $appointment->updated_at,
             'deleted_at'       => $appointment->deleted_at,

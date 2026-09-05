@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('hrs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unique()->constrained('users');
             $table->string('employee_number', 100)->unique();
             $table->string('name');
             $table->string('phone', 30);
@@ -22,7 +21,8 @@ return new class extends Migration
             $table->date('hire_date');
             $table->string('job_title');
             $table->boolean('is_active')->default(true);
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
