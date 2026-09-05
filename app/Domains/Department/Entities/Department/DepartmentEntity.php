@@ -29,7 +29,7 @@ class DepartmentEntity
             $data['code'],
             $data['description'],
             $data['is_active'],
-            $data['created_by'],
+            $data['created_by'] ?? null,
             $data['created_at'],
             $data['updated_at'],
             $data['deleted_at'],
@@ -80,7 +80,7 @@ class DepartmentEntity
         );
     }
 
-    public function isActive(): bool 
+    public function isActive(): bool
     {
         return $this->is_active;
     }

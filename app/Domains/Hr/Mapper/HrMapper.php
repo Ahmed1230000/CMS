@@ -11,7 +11,7 @@ class HrMapper
     {
         return HrEntity::reconstitute([
             'id'              => $hr->id,
-            'user_id'         => $hr->user_id,
+            'user_id'         => $hr->user_id ?? null,
             'employee_number' => $hr->employee_number,
             'name'            => $hr->name,
             'phone'           => $hr->phone,
@@ -23,7 +23,7 @@ class HrMapper
             'hire_date'       => $hr->hire_date,
             'job_title'       => $hr->job_title,
             'is_active'       => $hr->is_active,
-            'created_by'      => $hr->created_by,
+            'created_by'      => $hr->created_by ?? null,
             'created_at'      => $hr->created_at,
             'updated_at'      => $hr->updated_at,
             'deleted_at'      => $hr->deleted_at,

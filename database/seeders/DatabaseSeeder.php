@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domains\Prescription\Database\Seeders\PrescriptionItemSeeder;
+use App\Domains\Prescription\Database\Seeders\PrescriptionSeeder;
+use App\Domains\MedicalRecord\Database\Seeders\MedicalRecordSeeder;
 use App\Domains\Appointment\Database\Seeders\AppointmentSeeder;
 use App\Domains\Patient\Database\Seeders\PatientSeeder;
 use App\Domains\Employee\Database\Seeders\EmployeeSeeder;
@@ -22,14 +25,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
-            RoleAndPermissionSeeder::class,
+            // UserSeeder::class,
+            // RoleAndPermissionSeeder::class,
             DepartmentSeeder::class,
-            HrSeeder::class,
-            DoctorSeeder::class,
-            EmployeeSeeder::class,
-            PatientSeeder::class,
-            AppointmentSeeder::class,
+            // HrSeeder::class,
+            // DoctorSeeder::class,
+            // EmployeeSeeder::class,
+            // PatientSeeder::class,
+            // AppointmentSeeder::class,
+            // MedicalRecordSeeder::class,
+            // PrescriptionSeeder::class,
+            // PrescriptionItemSeeder::class,
         ]);
     }
 }

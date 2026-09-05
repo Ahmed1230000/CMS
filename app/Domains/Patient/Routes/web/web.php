@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Patient\Http\Controllers\Patient\{DownloadMedicalDocumentController, ViewMedicalDocumentController};
 use Illuminate\Support\Facades\Route;
 
 Route::livewire(
@@ -26,3 +27,18 @@ Route::livewire(
     'patients/{id}',
     'pages::patients.show'
 )->middleware('auth')->name('patients.show');
+
+
+Route::get(
+    'patients/{patient}/documents/{media}',
+    ViewMedicalDocumentController::class
+)
+    ->middleware('auth')
+    ->name('patients.documents.view');
+
+Route::get(
+    'patients/{patient}/documents/{media}/download',
+    DownloadMedicalDocumentController::class
+)
+    ->middleware('auth')
+    ->name('patients.documents.download');

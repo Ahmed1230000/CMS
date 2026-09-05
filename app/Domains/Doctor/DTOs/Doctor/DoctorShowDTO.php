@@ -9,7 +9,7 @@ class DoctorShowDTO
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-        public readonly string $user_id,
+        public readonly ?string $user_id,
         public readonly string $license_number,
         public readonly string $specialization,
         public readonly string $phone,
@@ -27,7 +27,7 @@ class DoctorShowDTO
         return new self(
             id: (int) $data['id'],
             name: $data['name'],
-            user_id: $data['user_id'],
+            user_id: $data['user_id'] ?? null,
             license_number: $data['license_number'],
             specialization: $data['specialization'],
             phone: $data['phone'],

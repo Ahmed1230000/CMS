@@ -12,7 +12,8 @@ class PatientQueryBuilder extends BaseQueryBuilder
 
     protected array $allowedIncludes = [
         'user',
-        'creator'
+        'creator',
+        'medicalDocuments',
     ];
 
     protected array $allowedFilters = [
@@ -62,5 +63,16 @@ class PatientQueryBuilder extends BaseQueryBuilder
             ])
             ->where('patients.id', $id)
             ->firstOrFail();
+    }
+
+    public function searchByPhone(string $phone): QueryBuilder
+    {
+        return $this->query()
+            ->select([
+                'patients.id',
+                'patients.name',
+                'patients.phone',
+            ])
+            ->where('patients.phone', $phone);
     }
 }

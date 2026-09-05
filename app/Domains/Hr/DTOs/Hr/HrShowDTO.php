@@ -8,7 +8,7 @@ class HrShowDTO
 {
     public function __construct(
         public readonly int $id,
-        public readonly int $user_id,
+        public readonly ?int $user_id,
         public readonly string $name,
         public readonly string $employee_number,
         public readonly string $email,
@@ -30,7 +30,7 @@ class HrShowDTO
     {
         return new self(
             id: (int) $data['id'],
-            user_id: (int) $data['user_id'],
+            user_id: (int) $data['user_id'] ?? null,
             name: $data['name'],
             employee_number: $data['employee_number'],
             email: $data['email'],

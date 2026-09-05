@@ -22,7 +22,7 @@ class HrEloquentRepository implements HrRepositoryInterface
         $hr = (new HrQueryBuilder)->showQuery($id);
         return HrShowDTO::fromArray([
             'id' => $hr->id,
-            'user_id' => $hr->user_id,
+            'user_id' => $hr->user_id ?? null,
             'name' => $hr->name,
             'employee_number' => $hr->employee_number,
             'email' => $hr->email,

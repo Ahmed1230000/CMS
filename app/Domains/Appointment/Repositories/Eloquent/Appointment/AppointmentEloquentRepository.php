@@ -21,21 +21,14 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
             ->paginate(10)
             ->through(
                 fn($appointment) => AppointmentListDTO::fromArray([
-                    'id' => $appointment->id,
-
-                    'doctor_name' => $appointment->doctor?->user?->name ?? '',
-
-                    'patient_name' => $appointment->patient?->name ?? '',
-
-                    'department_name' => $appointment->department?->name ?? '',
-
+                    'id'               => $appointment->id,
+                    'doctor_name'      => $appointment->doctor?->user?->name ?? '',
+                    'patient_name'     => $appointment->patient?->name ?? '',
+                    'department_name'  => $appointment->department?->name ?? '',
                     'appointment_date' => $appointment->appointment_date,
-
-                    'start_time' => $appointment->start_time,
-
-                    'end_time' => $appointment->end_time,
-
-                    'status' => $appointment->status->value,
+                    'start_time'       => $appointment->start_time,
+                    'end_time'         => $appointment->end_time,
+                    'status'           => $appointment->status->value,
                 ])
             );
     }
@@ -46,33 +39,22 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
             ->queryShow($id);
 
         return AppointmentShowDTO::fromArray([
-            'id' => $appointment->id,
-
-            'doctor_name' => $appointment->doctor?->user?->name ?? '',
-
-            'doctor_id' => $appointment->doctor_id,
-
-            'patient_name' => $appointment->patient?->name ?? '',
-
-            'department_name' => $appointment->department?->name ?? '',
-
+            'id'               => $appointment->id,
+            'doctor_name'      => $appointment->doctor?->user?->name ?? '',
+            'doctor_id'        => $appointment->doctor_id,
+            'patient_name'     => $appointment->patient?->name ?? '',
+            'patient_id'       => $appointment->patient_id,
+            'department_name'  => $appointment->department?->name ?? '',
+            'department_id'    => $appointment->department_id,
             'appointment_date' => $appointment->appointment_date,
-
-            'start_time' => $appointment->start_time,
-
-            'end_time' => $appointment->end_time,
-
-            'status' => $appointment->status->value,
-
-            'reason' => $appointment->reason,
-
-            'notes' => $appointment->notes,
-
-            'creator_name' => $appointment->creator?->name ?? '',
-
-            'created_at' => $appointment->created_at,
-
-            'updated_at' => $appointment->updated_at,
+            'start_time'       => $appointment->start_time,
+            'end_time'         => $appointment->end_time,
+            'status'           => $appointment->status->value,
+            'reason'           => $appointment->reason,
+            'notes'            => $appointment->notes,
+            'creator_name'     => $appointment->creator?->name ?? '',
+            'created_at'       => $appointment->created_at,
+            'updated_at'       => $appointment->updated_at,
         ]);
     }
 

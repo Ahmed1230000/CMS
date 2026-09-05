@@ -8,7 +8,7 @@ class DoctorEntity
 {
     private function __construct(
         public readonly ?int $id,
-        public readonly int $user_id,
+        public readonly ?int $user_id,
         public readonly int $department_id,
         public readonly string $license_number,
         public readonly string $specialization,
@@ -16,7 +16,7 @@ class DoctorEntity
         public readonly string $email,
         public readonly ?string $bio,
         public readonly bool $is_active,
-        public readonly int $created_by,
+        public readonly ?int $created_by,
         public readonly Carbon $created_at,
         public readonly Carbon $updated_at,
         public readonly ?Carbon $deleted_at,
@@ -56,7 +56,7 @@ class DoctorEntity
     {
         return new self(
             id: $data['id'],
-            user_id: $data['user_id'],
+            user_id: $data['user_id'] ?? null,
             department_id: $data['department_id'],
             license_number: $data['license_number'],
             specialization: $data['specialization'],
@@ -64,7 +64,7 @@ class DoctorEntity
             email: $data['email'],
             bio: $data['bio'] ?? null,
             is_active: $data['is_active'],
-            created_by: $data['created_by'],
+            created_by: $data['created_by'] ?? null,
             created_at: $data['created_at'],
             updated_at: $data['updated_at'],
             deleted_at: $data['deleted_at'] ?? null,
@@ -96,7 +96,7 @@ class DoctorEntity
             deleted_at: $this->deleted_at,
         );
     }
-    public function isActive(): bool 
+    public function isActive(): bool
     {
         return $this->is_active;
     }

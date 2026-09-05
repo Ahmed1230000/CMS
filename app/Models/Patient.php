@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 #[Fillable([
     'patient_number',
@@ -20,9 +22,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'created_by',
     'user_id'
 ])]
-class Patient extends Model
+class Patient extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $casts = [
         'date_of_birth' => 'date',
@@ -39,5 +41,11 @@ class Patient extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function medicalDocuments()
+    {
+        return $this->media()
+            ->where('collection_name', 'medical_documents');
     }
 }

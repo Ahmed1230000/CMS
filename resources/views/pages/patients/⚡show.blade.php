@@ -1,6 +1,6 @@
 <?php
 
-use App\Domains\Patient\Entities\Patient\PatientEntity;
+use App\Domains\Patient\UseCases\GetPatientMedicalDocumentsUseCase\GetPatientMedicalDocumentsUseCase;
 use App\Domains\Patient\UseCases\ShowPatientUseCase\ShowPatientUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -10,12 +10,17 @@ new #[Layout('layouts.dashboard')] class extends Component
 {
     protected ShowPatientUseCase $showPatientUseCase;
 
+    protected GetPatientMedicalDocumentsUseCase $getPatientMedicalDocumentsUseCase;
+
     public int $patient_id;
 
     public function boot(
-        ShowPatientUseCase $showPatientUseCase
+        ShowPatientUseCase $showPatientUseCase,
+        GetPatientMedicalDocumentsUseCase $getPatientMedicalDocumentsUseCase
     ): void {
         $this->showPatientUseCase = $showPatientUseCase;
+
+        $this->getPatientMedicalDocumentsUseCase = $getPatientMedicalDocumentsUseCase;
     }
 
     public function mount(string $id): void
@@ -30,7 +35,16 @@ new #[Layout('layouts.dashboard')] class extends Component
             $this->patient_id
         );
     }
+
+    #[Computed]
+    public function medicalDocuments()
+    {
+        return $this->getPatientMedicalDocumentsUseCase->execute(
+            $this->patient_id
+        );
+    }
 };
+
 ?>
 
 <div>
@@ -45,7 +59,7 @@ new #[Layout('layouts.dashboard')] class extends Component
             </h1>
 
             <p class="mt-2 text-slate-500">
-                View patient information.
+                View patient information and medical documents.
             </p>
 
         </div>
@@ -54,9 +68,7 @@ new #[Layout('layouts.dashboard')] class extends Component
             href="{{ route('patients.index') }}"
             wire:navigate
             class="rounded-lg border border-slate-300 px-5 py-2 text-slate-700 transition hover:bg-slate-100">
-
             Back
-
         </a>
 
     </div>
@@ -103,7 +115,6 @@ new #[Layout('layouts.dashboard')] class extends Component
 
         {{-- Information --}}
         <div class="grid grid-cols-1 gap-6 p-8 md:grid-cols-2">
-
 
             {{-- ID --}}
             <div class="rounded-xl border border-slate-200 p-5">
@@ -239,7 +250,7 @@ new #[Layout('layouts.dashboard')] class extends Component
                 </p>
 
                 <p class="mt-2 text-lg font-semibold text-slate-800">
-                    #{{ $this->patient->creator_name }}
+                    {{ $this->patient->creator_name }}
                 </p>
 
             </div>
@@ -269,6 +280,87 @@ new #[Layout('layouts.dashboard')] class extends Component
                 <p class="mt-2 text-slate-700">
                     {{ $this->patient->updated_at->format('Y-m-d H:i:s') }}
                 </p>
+
+            </div>
+
+        </div>
+
+
+        {{-- Medical Documents --}}
+        <div class="border-t border-slate-200">
+
+            <div class="border-b border-slate-200 px-8 py-6">
+
+                <h2 class="text-lg font-semibold text-slate-800">
+                    Medical Documents
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Documents uploaded for this patient.
+                </p>
+
+            </div>
+
+
+            <div class="p-8">
+
+                @forelse ($this->medicalDocuments as $document)
+
+                <div
+                    wire:key="medical-document-{{ $document->id }}"
+                    class="mb-3 flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4 last:mb-0">
+
+                    <div>
+
+                        <p class="font-medium text-slate-800">
+                            {{ $document->file_name }}
+                        </p>
+
+                        <div class="mt-1 flex gap-4 text-sm text-slate-500">
+
+                            <span>
+                                {{ $document->mime_type }}
+                            </span>
+
+                            <span>
+                                {{ number_format($document->size / 1024, 1) }} KB
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex items-center gap-2">
+
+                        <a
+                            href="{{ route('patients.documents.view', [
+                                'patient' => $this->patient->id,
+                                'media' => $document->id,]) }}"
+                            target="_blank"
+                            class="rounded-lg bg-blue-100 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-200">
+                            View
+                        </a>
+
+                        <a
+                            href="{{ route('patients.documents.download', [
+                                    'patient' => $this->patient->id,
+                                    'media' => $document->id,]) }}"
+                            class="rounded-lg bg-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-300">
+                            Download
+                        </a>
+
+                    </div>
+
+                </div>
+
+                @empty
+
+                <div class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-6 text-center text-sm text-slate-500">
+                    No medical documents found.
+                </div>
+
+                @endforelse
 
             </div>
 

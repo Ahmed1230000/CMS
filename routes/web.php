@@ -11,5 +11,5 @@ Route::livewire('/login', 'pages::auth.login')
 
 Route::livewire('/dashboard', 'pages::dashboard.index')
     ->middleware('auth')
-    ->name('dashboard'); 
-    
+    ->name('dashboard');
+
