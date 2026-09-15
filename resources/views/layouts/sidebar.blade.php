@@ -274,15 +274,15 @@
 
         </details>
 
-
-        {{-- Billing --}}
+        {{-- Pharmacy --}}
         <details
-            class="group">
+            class="group"
+            {{ request()->routeIs('medicines.*', 'pharmacy.*') ? 'open' : '' }}>
 
             <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
 
                 <span>
-                    Billing
+                    Pharmacy
                 </span>
 
                 <svg
@@ -301,26 +301,117 @@
 
             </summary>
 
+            <div class="mt-2 space-y-1">
+
+                {{-- Medicines --}}
+                <a
+                    href="{{ route('medicines.index') }}"
+                    wire:navigate
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+            {{ request()->routeIs('medicines.*')
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                    Medicines
+
+                </a>
+
+            </div>
+
+        </details>
+
+        {{-- Requests --}}
+        <details
+            class="group"
+            {{ request()->routeIs('requests.*') ? 'open' : '' }}>
+
+            <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
+
+                <span>
+                    Requests
+                </span>
+
+                <svg
+                    class="h-4 w-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+
+                </svg>
+
+            </summary>
 
             <div class="mt-2 space-y-1">
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
-                    Medicines
-                </span>
+                {{-- Requests --}}
+                <a
+                    href="{{ route('requests.index') }}"
+                    wire:navigate
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+            {{ request()->routeIs('requests.*')
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
-                    Billing
-                </span>
+                    Requests
 
-                <span class="block rounded-xl px-4 py-3 text-slate-500">
-                    Payments
-                </span>
+                </a>
 
             </div>
 
         </details>
 
 
+        {{-- Billing --}}
+        <details
+            class="group"
+            {{ request()->routeIs('BILLING.*') ? 'open' : '' }}>
+
+            <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wider text-slate-500 transition hover:bg-slate-800 hover:text-white">
+
+                <span>
+                    BILLING
+                </span>
+
+                <svg
+                    class="h-4 w-4 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7" />
+
+                </svg>
+
+            </summary>
+
+            <div class="mt-2 space-y-1">
+
+                {{-- Invoices --}}
+                <a
+                    href="{{ route('invoices.index') }}"
+                    wire:navigate
+                    class="flex items-center rounded-xl px-4 py-3 font-medium transition
+            {{ request()->routeIs('requests.*')
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                    Invoices
+
+                </a>
+
+            </div>
+
+        </details>
     </nav>
 
 
