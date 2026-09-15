@@ -5,8 +5,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')]
-class extends Component
+new #[Layout('layouts.dashboard')] class extends Component
 {
     public string $id;
 
@@ -70,6 +69,16 @@ class extends Component
 
             View Items
         </a>
+        @if ($this->invoice->canReceivePayment)
+        <a
+            href="{{ route('payments.create', [
+            'invoice' => $this->invoice->id,
+        ]) }}"
+            wire:navigate
+            class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
+            Pay Invoice
+        </a>
+        @endif
     </div>
 
     {{-- Invoice Information --}}

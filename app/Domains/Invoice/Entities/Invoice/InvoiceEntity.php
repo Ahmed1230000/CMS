@@ -103,4 +103,39 @@ class InvoiceEntity
             deleted_at: $this->deleted_at,
         );
     }
+    public function unPaid(): self
+    {
+        $now = new Carbon();
+
+        return new self(
+            id: $this->id,
+            invoiceNumber: $this->invoiceNumber,
+            patientId: $this->patientId,
+            prescriptionId: $this->prescriptionId,
+            type: $this->type,
+            status: InvoiceStatusEnum::UNPAID,
+            subtotal: $this->subtotal,
+            discount: $this->discount,
+            tax: $this->tax,
+            total: $this->total,
+            paidAmount: $this->paidAmount,
+            remainingAmount: $this->remainingAmount,
+            created_at: $this->created_at,
+            updated_at: $now,
+            deleted_at: $this->deleted_at,
+        );
+    }
+
+    public function canReceivePayment(): bool
+    {
+        return in_array($this->status, [
+            InvoiceStatusEnum::UNPAID,
+            InvoiceStatusEnum::PARTIALLY_PAID,
+        ], true);
+    }
+
+    public function canFinish(): bool
+    {
+        return $this->status === InvoiceStatusEnum::DRAFT;
+    }
 }

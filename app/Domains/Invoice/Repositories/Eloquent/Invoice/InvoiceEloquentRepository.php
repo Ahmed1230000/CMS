@@ -5,6 +5,7 @@ namespace App\Domains\Invoice\Repositories\Eloquent\Invoice;
 use App\Domains\Invoice\DTOs\Invoice\IndexInvoiceDTO;
 use App\Domains\Invoice\DTOs\Invoice\ShowInvoiceDTO;
 use App\Domains\Invoice\Entities\Invoice\InvoiceEntity;
+use App\Domains\Invoice\Enums\InvoiceStatusEnum;
 use App\Domains\Invoice\Mapper\InvoiceMapper;
 use App\Domains\Invoice\Repositories\Contracts\Invoice\InvoiceRepositoryInterface;
 use App\Infrastructure\QueryBuilder\Invoice\InvoiceQueryBuilder;
@@ -34,6 +35,7 @@ class InvoiceEloquentRepository implements InvoiceRepositoryInterface
     public function show(int $id)
     {
         $invoice = (new InvoiceQueryBuilder())->queryShow($id);
+        $invoiceEntity = InvoiceMapper::toEntity($invoice);
 
         return ShowInvoiceDTO::fromArray([
             'id' => $invoice->id,
@@ -56,6 +58,8 @@ class InvoiceEloquentRepository implements InvoiceRepositoryInterface
 
             'paid_amount' => $invoice->paid_amount,
             'remaining_amount' => $invoice->remaining_amount,
+            'can_receive_payment' => $invoiceEntity->canReceivePayment(),
+
 
             'created_at' => $invoice->created_at,
             'updated_at' => $invoice->updated_at,
@@ -112,5 +116,34 @@ class InvoiceEloquentRepository implements InvoiceRepositoryInterface
     {
         $invoice = Invoice::findOrFail($id);
         return $invoice;
+    }
+
+    public function hasItems(int $invoiceId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);
+        return $invoice->items()->exists();
+    }
+    public function findByEntity(int $id): InvoiceEntity
+    {
+        $invoice = Invoice::findOrFail($id);
+        return InvoiceMapper::toEntity($invoice);
+    }
+
+    public function changeToUnpaid(InvoiceEntity $invoiceEntity)
+    {
+        $invoice = Invoice::findOrFail($invoiceEntity->id);
+        $invoice->update([
+            'status' => InvoiceStatusEnum::UNPAID
+        ]);
+    }
+
+    public function updatePaymentState(int $id, array $updatePayment)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update([
+            'paid_amount'      => $updatePayment['paid_amount'],
+            'remaining_amount' => $updatePayment['remaining_amount'],
+            'status'           => $updatePayment['status'],
+        ]);
     }
 }

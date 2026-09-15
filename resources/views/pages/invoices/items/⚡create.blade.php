@@ -2,7 +2,9 @@
 
 use App\Domains\Invoice\DTOs\InvoiceItem\InvoiceItemDTO;
 use App\Domains\Invoice\DTOs\InvoiceItem\UpdateInvoiceItemDTO;
+use App\Domains\Invoice\Exceptions\Invoice\InvoiceItemsRequiredException;
 use App\Domains\Invoice\Repositories\Contracts\Invoice\InvoiceRepositoryInterface;
+use App\Domains\Invoice\UseCases\FinishInvoiceUseCase\FinishInvoiceUseCase;
 use App\Domains\Invoice\UseCases\IndexInvoiceItemUseCase\IndexInvoiceItemUseCase;
 use App\Domains\Invoice\UseCases\InvoiceItem\CreateInvoiceItemUseCase;
 use App\Domains\Invoice\UseCases\InvoiceItem\DeleteInvoiceItemUseCase;
@@ -34,6 +36,8 @@ class extends Component
 
     private InvoiceRepositoryInterface $invoiceRepository;
 
+    private FinishInvoiceUseCase $finishInvoiceUseCase;
+
     private DeleteInvoiceItemUseCase $delete;
 
     public function boot(
@@ -42,6 +46,7 @@ class extends Component
         IndexInvoiceItemUseCase $indexInvoiceItemUseCase,
         DeleteInvoiceItemUseCase $deleteInvoiceItemUseCase,
         UpdateInvoiceItemUseCase $updateInvoiceItemUseCase,
+        FinishInvoiceUseCase $finishInvoiceUseCase,
         InvoiceRepositoryInterface $invoiceRepository,
 
     ): void {
@@ -50,6 +55,7 @@ class extends Component
         $this->indexInvoiceItemUseCase = $indexInvoiceItemUseCase;
         $this->updateInvoiceItemUseCase = $updateInvoiceItemUseCase;
         $this->invoiceRepository = $invoiceRepository;
+        $this->finishInvoiceUseCase = $finishInvoiceUseCase;
         $this->delete = $deleteInvoiceItemUseCase;
     }
 
@@ -128,6 +134,27 @@ class extends Component
     public function deleteItem(int $id)
     {
         $this->delete->execute($id);
+    }
+
+    public function finishInvoice(): void
+    {
+        try {
+            $this->finishInvoiceUseCase->execute(
+                (int) $this->invoice
+            );
+
+            $this->redirect(
+                route('invoices.show', [
+                    'id' => $this->invoice,
+                ]),
+                navigate: true
+            );
+        } catch (InvoiceItemsRequiredException $e) {
+            $this->addError(
+                'finishInvoice',
+                $e->getMessage()
+            );
+        }
     }
 };
 ?>
@@ -427,11 +454,33 @@ class extends Component
             Back
         </a>
 
-        <button
-            type="button"
-            class="rounded-lg bg-green-600 px-5 py-2 text-sm font-medium text-white hover:bg-green-700">
-            Finish Invoice
-        </button>
+        @if ($this->invoiceData->status->value === 'draft')
+
+        <div class="flex flex-col items-end gap-2">
+
+            @error('finishInvoice')
+            <p class="text-sm font-medium text-red-600">
+                {{ $message }}
+            </p>
+            @enderror
+
+            <button
+                type="button"
+                wire:click="finishInvoice"
+                wire:loading.attr="disabled"
+                class="rounded-lg bg-green-600 px-5 py-2 text-sm font-medium text-white hover:bg-green-700">
+                <span wire:loading.remove>
+                    Finish Invoice
+                </span>
+
+                <span wire:loading>
+                    Finishing...
+                </span>
+            </button>
+
+        </div>
+
+        @endif
 
     </div>
 

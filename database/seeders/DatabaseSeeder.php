@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domains\Payment\Database\Seeders\PaymentSeeder;
 use App\Domains\Invoice\Database\Seeders\InvoiceItemSeeder;
 use App\Domains\Invoice\Database\Seeders\InvoiceSeeder;
 use App\Domains\Pharmacy\Database\Seeders\MedicineItemSeeder;
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
             MedicineItemSeeder::class,
             InvoiceSeeder::class,
             InvoiceItemSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }

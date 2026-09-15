@@ -30,6 +30,7 @@ class ShowInvoiceDTO
         public readonly float $total,
         public readonly float $paidAmount,
         public readonly float $remainingAmount,
+        public readonly bool $canReceivePayment,
         public readonly Carbon $createdAt,
         public readonly Carbon $updatedAt,
     ) {}
@@ -52,6 +53,7 @@ class ShowInvoiceDTO
             total: (float) $data['total'],
             paidAmount: (float) $data['paid_amount'],
             remainingAmount: (float) $data['remaining_amount'],
+            canReceivePayment: $data['can_receive_payment'],
             createdAt: $data['created_at'] ?? null,
             updatedAt: $data['updated_at'] ?? null,
         );

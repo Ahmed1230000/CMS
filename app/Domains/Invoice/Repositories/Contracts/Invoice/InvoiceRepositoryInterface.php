@@ -18,4 +18,8 @@ interface InvoiceRepositoryInterface
      public function insertInvoiceNumber(InvoiceEntity $invoiceEntity): InvoiceEntity;
      public function updateTotals(int $id, array $totals);
      public function find(int $id);
+     public function hasItems(int $invoiceId);
+     public function findByEntity(int $id): InvoiceEntity;
+     public function changeToUnpaid(InvoiceEntity $invoiceEntity);
+     public function updatePaymentState(int $id, array $updatePayment);
 }
