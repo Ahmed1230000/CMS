@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Model;
     'amount',
     'status',
     'transaction_id',
+    'paymob_intention_id',
+    'paymob_order_id',
+    'paymob_transaction_id',
     'paid_at',
     'created_by',
 )]
