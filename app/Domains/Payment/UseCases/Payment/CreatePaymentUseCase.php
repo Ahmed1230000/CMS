@@ -27,7 +27,6 @@ class CreatePaymentUseCase
             $invoiceEntity = $this->invoiceRepositoryInterface->findByEntity($invoiceId);
 
             if (!$invoiceEntity->canReceivePayment()) {
-
                 throw new InvoiceNotPayableException('This invoice cannot receive payment.');
             }
 
@@ -36,12 +35,10 @@ class CreatePaymentUseCase
             $paymentImpact = $this->invoiceService->calculatePaymentImpact($invoice, $dto->amount);
 
             $payment = PaymentEntity::create(
-
                 invoiceId: $invoiceId,
                 createdBy: auth()->id(),
                 method: $dto->method,
                 amount: $dto->amount,
-
             );
 
             $payment = $this->repository->create($payment);

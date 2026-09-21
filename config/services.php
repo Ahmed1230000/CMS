@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    'paymob' => [
+        'base_url'            => env('PAYMOB_BASE_URL'),
+        'secret_key'          => env('PAYMOB_SECRET_KEY'),
+        'public_key'          => env('PAYMOB_PUBLIC_KEY'),
+        'card_integration_id' => env('PAYMOB_CARD_INTEGRATION_ID'),
+        'currency'            => env('PAYMOB_CURRENCY', 'EGP'),
+        'webhook_url'         => env('PAYMOB_WEBHOOK_URL'),
+        'redirection_url'     => env('PAYMOB_REDIRECTION_URL'),
+        'hmac_secret'         => env('PAYMOB_HMAC_SECRET'),
+    ],
 ];

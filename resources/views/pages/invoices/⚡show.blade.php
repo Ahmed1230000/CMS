@@ -1,6 +1,10 @@
 <?php
 
+use App\Domains\Invoice\DTOs\Invoice\InvoiceDTO;
 use App\Domains\Invoice\UseCases\ShowInvoiceUseCase\ShowInvoiceUseCase;
+use App\Domains\Payment\DTOs\Payment\PaymentDTO;
+use App\Domains\Payment\Enums\PaymentMethodEnum;
+use App\Domains\Payment\UseCases\CreateCardPaymentUseCase\CreateCardPaymentUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -10,11 +14,14 @@ new #[Layout('layouts.dashboard')] class extends Component
     public string $id;
 
     private ShowInvoiceUseCase $showInvoiceUseCase;
+    private CreateCardPaymentUseCase $createCardPaymentUseCase;
 
     public function boot(
-        ShowInvoiceUseCase $showInvoiceUseCase
+        ShowInvoiceUseCase $showInvoiceUseCase,
+        CreateCardPaymentUseCase $createCardPaymentUseCase
     ): void {
         $this->showInvoiceUseCase = $showInvoiceUseCase;
+        $this->createCardPaymentUseCase = $createCardPaymentUseCase;
     }
 
     public function mount(string $id): void
@@ -28,6 +35,17 @@ new #[Layout('layouts.dashboard')] class extends Component
         return $this->showInvoiceUseCase->execute(
             (int) $this->id
         );
+    }
+
+    public function payWithCard()
+    {
+        $amount = $this->invoice->remainingAmount;
+
+        $dto = new PaymentDTO(PaymentMethodEnum::CARD, $amount);
+
+        $result = $this->createCardPaymentUseCase->execute($this->id, $dto);
+
+        $this->dispatch('open-paymob-checkout', clientSecret: $result['client_secret'], publicKey: config('services.paymob.public_key'),);
     }
 };
 ?>
@@ -70,14 +88,23 @@ new #[Layout('layouts.dashboard')] class extends Component
             View Items
         </a>
         @if ($this->invoice->canReceivePayment)
+
         <a
             href="{{ route('payments.create', [
             'invoice' => $this->invoice->id,
         ]) }}"
             wire:navigate
             class="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700">
-            Pay Invoice
+            💵 Cash
         </a>
+
+        <button
+            type="button"
+            wire:click="payWithCard"
+            class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700">
+            💳 Card
+        </button>
+
         @endif
     </div>
 
@@ -196,3 +223,17 @@ new #[Layout('layouts.dashboard')] class extends Component
     </div>
 
 </div>
+
+<script>
+    Livewire.on('open-paymob-checkout', function(event) {
+        const clientSecret = event.clientSecret;
+        const publicKey = event.publicKey;
+
+        const checkoutUrl =
+            'https://eg.checkout.paymob.com/' +
+            '?publicKey=' + encodeURIComponent(publicKey) +
+            '&clientSecret=' + encodeURIComponent(clientSecret);
+
+        window.location.href = checkoutUrl;
+    });
+</script>

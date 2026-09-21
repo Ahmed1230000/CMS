@@ -17,6 +17,18 @@ return new class extends Migration
                 ->constrained()
                 ->restrictOnDelete();
 
+            $table->string('paymob_intention_id')
+                ->nullable()
+                ->unique();
+
+            $table->unsignedBigInteger('paymob_order_id')
+                ->nullable()
+                ->unique();
+
+            $table->unsignedBigInteger('paymob_transaction_id')
+                ->nullable()
+                ->unique();
+
             $table->enum('method', array_column(
                 PaymentMethodEnum::cases(),
                 'value'
@@ -30,8 +42,8 @@ return new class extends Migration
             ))->default(PaymentStatusEnum::PENDING->value);
 
             $table->string('transaction_id')->nullable()->unique();
-            
-            $table->foreignId('created_by')->constrained('users','id')->restrictOnDelete();
+
+            $table->foreignId('created_by')->constrained('users', 'id')->restrictOnDelete();
 
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
