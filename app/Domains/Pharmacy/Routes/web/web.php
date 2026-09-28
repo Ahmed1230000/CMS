@@ -2,46 +2,50 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::livewire(
-    'medicines',
-    'pages::medicines.index'
-)->middleware('auth')->name('medicines.index');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::livewire(
-    'medicines/create',
-    'pages::medicines.create'
-)->middleware('auth')->name('medicines.create');
+    // Medicines
 
-Route::livewire(
-    'medicines/show/{id}',
-    'pages::medicines.show'
-)->middleware('auth')->name('medicines.show');
+    Route::livewire(
+        'medicines',
+        'pages::medicines.index'
+    )->name('medicines.index');
 
-Route::livewire(
-    'medicines/update/{id}',
-    'pages::medicines.update'
-)->middleware('auth')->name('medicines.update');
+    Route::livewire(
+        'medicines/create',
+        'pages::medicines.create'
+    )->name('medicines.create');
+
+    Route::livewire(
+        'medicines/show/{id}',
+        'pages::medicines.show'
+    )->name('medicines.show');
+
+    Route::livewire(
+        'medicines/update/{id}',
+        'pages::medicines.update'
+    )->name('medicines.update');
 
 
-/////////////////////////////
+    // Medicine Items
 
+    Route::livewire(
+        'medicines/{medicine}/items',
+        'pages::medicine-items.index'
+    )->name('medicine-items.index');
 
-Route::livewire(
-    'medicines/{medicine}/items',
-    'pages::medicine-items.index'
-)->middleware('auth')->name('medicine-items.index');
+    Route::livewire(
+        'medicines/{medicine}/items/create',
+        'pages::medicine-items.create'
+    )->name('medicine-items.create');
 
-Route::livewire(
-    'medicines/{medicine}/items/create',
-    'pages::medicine-items.create'
-)->middleware('auth')->name('medicine-items.create');
+    Route::livewire(
+        'medicines/{medicine}/items/{id}',
+        'pages::medicine-items.show'
+    )->name('medicine-items.show');
 
-Route::livewire(
-    'medicines/{medicine}/items/{id}',
-    'pages::medicine-items.show'
-)->middleware('auth')->name('medicine-items.show');
-
-Route::livewire(
-    'medicines/{medicine}/items/{id}/update',
-    'pages::medicine-items.update'
-)->middleware('auth')->name('medicine-items.update');
+    Route::livewire(
+        'medicines/{medicine}/items/{id}/update',
+        'pages::medicine-items.update'
+    )->name('medicine-items.update');
+});

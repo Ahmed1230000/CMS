@@ -2,22 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::livewire(
-    'requests',
-    'pages::requests.index'
-)->middleware('auth')->name('requests.index');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::livewire(
-    'requests/create',
-    'pages::requests.create'
-)->middleware('auth')->name('requests.create');
+    Route::livewire(
+        'requests',
+        'pages::requests.index'
+    )->name('requests.index');
 
-Route::livewire(
-    'requests/show/{id}',
-    'pages::requests.show'
-)->middleware('auth')->name('requests.show');
+    Route::livewire(
+        'requests/create',
+        'pages::requests.create'
+    )->name('requests.create');
 
-Route::livewire(
-    'requests/update/{id}',
-    'pages::requests.update'
-)->middleware('auth')->name('requests.update');
+    Route::livewire(
+        'requests/show/{id}',
+        'pages::requests.show'
+    )->name('requests.show');
+
+    Route::livewire(
+        'requests/update/{id}',
+        'pages::requests.update'
+    )->name('requests.update');
+});
