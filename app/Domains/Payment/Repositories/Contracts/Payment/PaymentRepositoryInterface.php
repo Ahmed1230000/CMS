@@ -19,5 +19,7 @@ interface PaymentRepositoryInterface
 
     public function where(array|string $columns, mixed $target): ?Payment;
 
+    public function findForUpdateByPaymobOrderId(int $paymobOrderId): ?Payment;
+
     public function find(int $id);
 }

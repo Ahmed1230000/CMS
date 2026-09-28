@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Domains\Pharmacy\Database\Factories\MedicineItemFactory;
 use App\Domains\PHarmacy\Enums\MedicineStatusEnum;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 #[Fillable(
     'medicine_id',
@@ -21,6 +24,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 )]
 class MedicineItem extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return MedicineItemFactory::new();
+    }
     protected $casts = [
         'status' => MedicineStatusEnum::class,
     ];

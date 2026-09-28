@@ -5,9 +5,11 @@ namespace App\Domains\Identity\UseCases\RegisterUseCase;
 use App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface;
 use App\Domains\Identity\DTOs\Register\RegisterDTO;
 use App\Domains\Identity\Exceptions\Login\InvalidCredentialsException;
+use App\Domains\Identity\Service\CreateSessionService;
 use App\Domains\User\DTOs\User\UserDTO;
 use App\Domains\User\Entities\User\UserEntity;
 use App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterUseCase
 {
@@ -19,7 +21,8 @@ class RegisterUseCase
 
     public function __construct(
         private UserRepositoryInterface $repository,
-        private HashPasswordRepositoryInterface $passwordHasher
+        private HashPasswordRepositoryInterface $passwordHasher,
+        private CreateSessionService $createSessionService,
     ) {}
 
     /*
@@ -46,6 +49,14 @@ class RegisterUseCase
             $hashedPassword,
         );
 
-        return $this->repository->create($user);
+        $user = $this->repository->create($user);
+
+        $userModel = $this->repository->findModel($user->id);
+
+        $this->createSessionService->login($user);
+
+        event(new Registered($userModel));
+
+        return $user;
     }
 }

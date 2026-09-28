@@ -10,7 +10,7 @@ use App\Domains\Payment\Entities\Payment\PaymentEntity;
 use App\Domains\Payment\Repositories\Contracts\Payment\PaymentRepositoryInterface;
 use App\Domains\Payment\Services\Paymob\PaymobService;
 use Illuminate\Support\Facades\DB;
-use Str;
+use Illuminate\Support\Str;
 
 class CreateCardPaymentUseCase
 {

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Domains\Patient\Database\Factories\PatientFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -25,7 +27,10 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Patient extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia;
-
+    protected static function newFactory()
+    {
+        return PatientFactory::new();
+    }
     protected $casts = [
         'date_of_birth' => 'date',
         'is_active'     => 'boolean',
