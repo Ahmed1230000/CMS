@@ -47,6 +47,10 @@ class PaymentEloquentRepository implements PaymentRepositoryInterface
     {
         return Payment::where($columns, $target)->first();
     }
+    public function findForUpdateByPaymobOrderId(int $paymobOrderId): ?Payment
+    {
+        return Payment::query()->where('paymob_order_id', $paymobOrderId)->lockForUpdate()->first();
+    }
 
     public function find(int $id)
     {

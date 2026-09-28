@@ -2,6 +2,7 @@
 
 namespace App\Domains\Payment\UseCases\ProcessPaymobWebhookUseCase;
 
+use App\Domains\Invoice\Mapper\InvoiceMapper;
 use App\Domains\Invoice\Repositories\Contracts\Invoice\InvoiceRepositoryInterface;
 use App\Domains\Invoice\Services\Invoice\InvoiceService;
 use App\Domains\Payment\DTOs\Payment\PaymobWebhookDTO;
@@ -67,9 +68,6 @@ class ProcessPaymobWebhookUseCase
 
         $paymentEntity = PaymentMapper::toEntity($payment);
 
-        if ($paymentEntity->isPaid()) {
-            return;
-        }
         $paymobAmount = (int) $dto->transaction['amount_cents'];
         $paymentAmount = (int) round($paymentEntity->amount * 100);
 
@@ -121,20 +119,24 @@ class ProcessPaymobWebhookUseCase
             return;
         }
 
-        $invoiceEntity = $this->repository->findByEntity(
-            $paymentEntity->invoiceId
-        );
-
-        if (! $invoiceEntity->canReceivePayment()) {
-            throw new InvalidPaymobWebhookException(
-                'Invoice cannot receive payment.'
-            );
-        }
-
         DB::transaction(function () use (
-            $paymentEntity,
+            $paymobOrderId,
             $transactionId,
         ) {
+            $payment = $this->paymentRepositoryInterface->findForUpdateByPaymobOrderId($paymobOrderId);
+
+            if (! $payment) {
+                throw new InvalidPaymobWebhookException(
+                    'Paymob order ID does not match.'
+                );
+            }
+
+            $paymentEntity = PaymentMapper::toEntity($payment);
+
+            if ($paymentEntity->isPaid()) {
+                return;
+            }
+
             $paymentEntity = $paymentEntity->markAsPaid(
                 (int) $transactionId
             );
@@ -143,9 +145,19 @@ class ProcessPaymobWebhookUseCase
                 $paymentEntity
             );
 
-            $invoice = $this->repository->find(
+
+
+            $invoice = $this->repository->findForUpdate(
                 $paymentEntity->invoiceId
             );
+
+            $invoiceEntity = InvoiceMapper::toEntity($invoice);
+
+            if (! $invoiceEntity->canReceivePayment()) {
+                throw new InvalidPaymobWebhookException(
+                    'Invoice cannot receive payment.'
+                );
+            }
 
             $paymentImpact = $this->invoiceService->calculatePaymentImpact(
                 $invoice,

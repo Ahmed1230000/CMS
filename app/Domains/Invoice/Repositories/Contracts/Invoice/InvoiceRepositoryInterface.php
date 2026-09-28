@@ -3,6 +3,7 @@
 namespace App\Domains\Invoice\Repositories\Contracts\Invoice;
 
 use App\Domains\Invoice\Entities\Invoice\InvoiceEntity;
+use App\Models\Invoice;
 
 interface InvoiceRepositoryInterface
 {
@@ -19,7 +20,8 @@ interface InvoiceRepositoryInterface
      public function updateTotals(int $id, array $totals);
      public function find(int $id);
      public function hasItems(int $invoiceId);
-     public function findByEntity(int $id): InvoiceEntity;
+     public function findByEntity(int $id): ?InvoiceEntity;
+     public function findForUpdate(int $id): Invoice;
      public function changeToUnpaid(InvoiceEntity $invoiceEntity);
      public function updatePaymentState(int $id, array $updatePayment);
 }

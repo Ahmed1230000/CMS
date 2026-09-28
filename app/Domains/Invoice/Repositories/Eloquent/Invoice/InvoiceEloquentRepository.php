@@ -123,12 +123,15 @@ class InvoiceEloquentRepository implements InvoiceRepositoryInterface
         $invoice = Invoice::findOrFail($invoiceId);
         return $invoice->items()->exists();
     }
-    public function findByEntity(int $id): InvoiceEntity
+    public function findByEntity(int $id): ?InvoiceEntity
     {
         $invoice = Invoice::findOrFail($id);
         return InvoiceMapper::toEntity($invoice);
     }
-
+    public function findForUpdate(int $id): Invoice
+    {
+        return Invoice::query()->where('id', $id)->lockForUpdate()->first();
+    }
     public function changeToUnpaid(InvoiceEntity $invoiceEntity)
     {
         $invoice = Invoice::findOrFail($invoiceEntity->id);
@@ -137,9 +140,11 @@ class InvoiceEloquentRepository implements InvoiceRepositoryInterface
         ]);
     }
 
+
     public function updatePaymentState(int $id, array $updatePayment)
     {
         $invoice = Invoice::findOrFail($id);
+        
         $invoice->update([
             'paid_amount'      => $updatePayment['paid_amount'],
             'remaining_amount' => $updatePayment['remaining_amount'],

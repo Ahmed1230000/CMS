@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Domains\Invoice\Database\Factories\InvoiceItemFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Override;
 
 #[Fillable(
     'invoice_id',
@@ -16,6 +18,11 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceItem extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return InvoiceItemFactory::new();
+    }
     protected $casts = [
         'invoice_id'       => 'integer',
         'medicine_item_id' => 'integer',

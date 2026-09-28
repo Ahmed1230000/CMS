@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domains\Invoice\Database\Factories\InvoiceFactory;
 use App\Domains\Invoice\Enums\{
     InvoiceStatusEnum,
     InvoiceTypeEnum
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Override;
 
 #[Fillable(
     'invoice_number',
@@ -31,6 +33,11 @@ class Invoice extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'invoices';
+
+    protected static function newFactory()
+    {
+        return InvoiceFactory::new();
+    }
 
     protected $casts = [
         'type'             => InvoiceTypeEnum::class,

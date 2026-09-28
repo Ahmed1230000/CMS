@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Domains\Appointment\Database\Factories\AppointmentFactory;
 use App\Domains\Appointment\Enums\AppointmentStatusEnum;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 #[Fillable([
     'doctor_id',
@@ -23,6 +25,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Appointment extends Model
 {
     use HasFactory, SoftDeletes;
+
+
+    protected static function newFactory()
+    {
+        return AppointmentFactory::new();
+    }
 
     protected $casts = [
         'appointment_date' => 'date',

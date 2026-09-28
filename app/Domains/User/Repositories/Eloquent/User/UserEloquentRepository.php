@@ -2,7 +2,6 @@
 
 namespace App\Domains\User\Repositories\Eloquent\User;
 
-use App\Domains\User\DTOs\User\UserDTO;
 use App\Domains\User\Entities\User\UserEntity;
 use App\Domains\User\Mapper\UserMapper;
 use App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface;
@@ -30,12 +29,17 @@ class UserEloquentRepository implements UserRepositoryInterface
         return $user ? UserMapper::toEntity($user) : null;
     }
 
-    #[Override]
+    // #[Override]
     public function findById(int $id): ?UserEntity
     {
         $user = User::findOrFail($id);
         return $user ? UserMapper::toEntity($user) : null;
     }
+    public function findModel(int $id): ?User
+    {
+        return User::findOrFail($id);
+    }
+
 
 
     public function list(int $perPage = 10): LengthAwarePaginator

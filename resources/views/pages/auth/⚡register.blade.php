@@ -1,8 +1,8 @@
 <?php
 
 use App\Common\Traits\FlashMessageException;
-use App\Domains\Identity\DTOs\Login\LoginDTO;
-use App\Domains\Identity\UseCases\LoginUseCase\LoginUseCase;
+use App\Domains\Identity\DTOs\Register\RegisterDTO;
+use App\Domains\Identity\UseCases\RegisterUseCase\RegisterUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -16,13 +16,15 @@ new #[Layout('layouts.auth')] class extends Component
     |--------------------------------------------------------------------------
     */
 
+    public string $name = '';
+
     public string $email = '';
 
     public string $password = '';
 
-    public bool $remember = false;
+    public string $password_confirmation = '';
 
-    protected LoginUseCase $loginUseCase;
+    protected RegisterUseCase $registerUseCase;
 
     /*
     |--------------------------------------------------------------------------
@@ -30,9 +32,9 @@ new #[Layout('layouts.auth')] class extends Component
     |--------------------------------------------------------------------------
     */
 
-    public function boot(LoginUseCase $loginUseCase): void
+    public function boot(RegisterUseCase $registerUseCase): void
     {
-        $this->loginUseCase = $loginUseCase;
+        $this->registerUseCase = $registerUseCase;
     }
 
     /*
@@ -44,22 +46,25 @@ new #[Layout('layouts.auth')] class extends Component
     protected function rules(): array
     {
         return [
-            'email'    => ['required', 'email'],
-            'password' => ['required', 'string', 'min:8'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Login
+    | Register
     |--------------------------------------------------------------------------
     */
 
-    public function login()
+    public function register()
     {
         $data = [
-            'email'    => $this->email,
+            'name' => $this->name,
+            'email' => $this->email,
             'password' => $this->password,
+            'password_confirmation' => $this->password_confirmation,
         ];
 
         $validation = $this->flashValidationMessage(
@@ -72,14 +77,12 @@ new #[Layout('layouts.auth')] class extends Component
         }
 
         try {
+            $dto = RegisterDTO::from($validation);
 
-            $dto = LoginDTO::from($validation);
+            $this->registerUseCase->execute($dto);
 
-            $this->loginUseCase->execute($dto);
-
-            return $this->redirectRoute('dashboard');
+            return $this->redirectRoute('verification.notice');
         } catch (\Throwable $exception) {
-
             $this->handleException($exception);
         }
     }
@@ -111,7 +114,8 @@ new #[Layout('layouts.auth')] class extends Component
 
                     <div class="flex items-center gap-3">
 
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-600/30">
+                        <div
+                            class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-600/30">
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -120,10 +124,8 @@ new #[Layout('layouts.auth')] class extends Component
                                 stroke="currentColor"
                                 stroke-width="2"
                                 class="h-6 w-6 text-white">
-
                                 <path d="M12 5v14" />
                                 <path d="M5 12h14" />
-
                             </svg>
 
                         </div>
@@ -131,15 +133,11 @@ new #[Layout('layouts.auth')] class extends Component
                         <div>
 
                             <h1 class="text-xl font-bold tracking-wide text-white">
-
                                 HMS
-
                             </h1>
 
                             <p class="text-xs text-slate-400">
-
                                 Hospital Management System
-
                             </p>
 
                         </div>
@@ -152,14 +150,13 @@ new #[Layout('layouts.auth')] class extends Component
 
                 <div class="max-w-lg">
 
-                    <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-4 py-2">
+                    <div
+                        class="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/70 px-4 py-2">
 
                         <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
 
                         <span class="text-sm text-slate-300">
-
                             Secure Hospital Platform
-
                         </span>
 
                     </div>
@@ -169,17 +166,14 @@ new #[Layout('layouts.auth')] class extends Component
                         Everything your hospital needs,
 
                         <span class="text-blue-500">
-
                             in one place.
-
                         </span>
 
                     </h2>
 
                     <p class="mt-6 max-w-md text-lg leading-8 text-slate-400">
-
-                        Manage patients, doctors, appointments, roles and permissions from a single secure platform.
-
+                        Manage patients, doctors, appointments, roles and permissions
+                        from a single secure platform.
                     </p>
 
                     <!-- Features -->
@@ -188,24 +182,19 @@ new #[Layout('layouts.auth')] class extends Component
 
                         <div class="flex items-center gap-4">
 
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-blue-500">
-
+                            <div
+                                class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-blue-500">
                                 ✓
-
                             </div>
 
                             <div>
 
                                 <p class="font-medium text-white">
-
                                     Secure access
-
                                 </p>
 
                                 <p class="text-sm text-slate-500">
-
                                     Role-based authorization
-
                                 </p>
 
                             </div>
@@ -214,24 +203,19 @@ new #[Layout('layouts.auth')] class extends Component
 
                         <div class="flex items-center gap-4">
 
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-blue-500">
-
+                            <div
+                                class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-blue-500">
                                 ✓
-
                             </div>
 
                             <div>
 
                                 <p class="font-medium text-white">
-
                                     Centralized management
-
                                 </p>
 
                                 <p class="text-sm text-slate-500">
-
                                     Keep your hospital operations organized
-
                                 </p>
 
                             </div>
@@ -245,9 +229,7 @@ new #[Layout('layouts.auth')] class extends Component
                 <!-- Footer -->
 
                 <div class="text-sm text-slate-600">
-
                     © {{ date('Y') }} HMS. All rights reserved.
-
                 </div>
 
             </div>
@@ -267,12 +249,11 @@ new #[Layout('layouts.auth')] class extends Component
 
                 <div class="mb-10 flex items-center gap-3 lg:hidden">
 
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600">
+                    <div
+                        class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600">
 
                         <span class="text-xl font-bold text-white">
-
                             +
-
                         </span>
 
                     </div>
@@ -280,65 +261,56 @@ new #[Layout('layouts.auth')] class extends Component
                     <div>
 
                         <h1 class="font-bold text-slate-900">
-
                             HMS
-
                         </h1>
 
                         <p class="text-xs text-slate-500">
-
                             Hospital Management System
-
                         </p>
 
                     </div>
 
                 </div>
 
+
                 <!-- Heading -->
 
                 <div class="mb-10">
 
-                    <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-600">
-
-                        Welcome back
-
+                    <p
+                        class="mb-3 text-sm font-semibold uppercase tracking-widest text-blue-600">
+                        Get started
                     </p>
 
                     <h2 class="text-4xl font-bold tracking-tight text-slate-900">
-
-                        Sign in to your account
-
+                        Create your account
                     </h2>
 
                     <p class="mt-3 text-slate-500">
-
-                        Enter your credentials to access the hospital dashboard.
-
+                        Create your account to access the hospital management platform.
                     </p>
 
                 </div>
 
 
-                <!-- Login Form -->
+                <!-- Register Form -->
 
-                <form wire:submit="login" class="space-y-6">
+                <form wire:submit="register" class="space-y-6">
 
-                    <!-- Email -->
+                    <!-- Name -->
 
                     <div>
 
                         <label
-                            for="email"
+                            for="name"
                             class="mb-2 block text-sm font-semibold text-slate-700">
-
-                            Email address
-
+                            Full name
                         </label>
 
                         <div class="relative">
 
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
 
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -347,12 +319,61 @@ new #[Layout('layouts.auth')] class extends Component
                                     stroke-width="1.8"
                                     stroke="currentColor"
                                     class="h-5 w-5 text-slate-400">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0" />
+                                </svg>
 
+                            </div>
+
+                            <input
+                                id="name"
+                                type="text"
+                                wire:model.live="name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10">
+
+                        </div>
+
+                        @error('name')
+
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div>
+
+                        <label
+                            for="email"
+                            class="mb-2 block text-sm font-semibold text-slate-700">
+                            Email address
+                        </label>
+
+                        <div class="relative">
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.8"
+                                    stroke="currentColor"
+                                    class="h-5 w-5 text-slate-400">
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0l-7.5-4.615A2.25 2.25 0 012.25 6.993V6.75" />
-
                                 </svg>
 
                             </div>
@@ -370,9 +391,7 @@ new #[Layout('layouts.auth')] class extends Component
                         @error('email')
 
                         <p class="mt-2 text-sm text-red-600">
-
                             {{ $message }}
-
                         </p>
 
                         @enderror
@@ -384,21 +403,16 @@ new #[Layout('layouts.auth')] class extends Component
 
                     <div>
 
-                        <div class="mb-2 flex items-center justify-between">
-
-                            <label
-                                for="password"
-                                class="block text-sm font-semibold text-slate-700">
-
-                                Password
-
-                            </label>
-
-                        </div>
+                        <label
+                            for="password"
+                            class="mb-2 block text-sm font-semibold text-slate-700">
+                            Password
+                        </label>
 
                         <div class="relative">
 
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
 
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -407,12 +421,10 @@ new #[Layout('layouts.auth')] class extends Component
                                     stroke-width="1.8"
                                     stroke="currentColor"
                                     class="h-5 w-5 text-slate-400">
-
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 0h10.5A2.25 2.25 0 0119.5 12.75v6A2.25 2.25 0 0117.25 21H6.75a2.25 2.25 0 01-2.25-2.25v-6a2.25 2.25 0 012.25-2.25z" />
-
                                 </svg>
 
                             </div>
@@ -421,8 +433,8 @@ new #[Layout('layouts.auth')] class extends Component
                                 id="password"
                                 type="password"
                                 wire:model.live="password"
-                                placeholder="Enter your password"
-                                autocomplete="current-password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
                                 class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10">
 
                         </div>
@@ -430,9 +442,7 @@ new #[Layout('layouts.auth')] class extends Component
                         @error('password')
 
                         <p class="mt-2 text-sm text-red-600">
-
                             {{ $message }}
-
                         </p>
 
                         @enderror
@@ -440,30 +450,53 @@ new #[Layout('layouts.auth')] class extends Component
                     </div>
 
 
-                    <!-- Remember -->
+                    <!-- Confirm Password -->
 
-                    <div class="flex items-center justify-between">
+                    <div>
 
-                        <label class="flex cursor-pointer items-center gap-3">
-
-                            <input
-                                type="checkbox"
-                                wire:model="remember"
-                                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-
-                            <span class="text-sm text-slate-600">
-
-                                Remember me
-
-                            </span>
-
+                        <label
+                            for="password_confirmation"
+                            class="mb-2 block text-sm font-semibold text-slate-700">
+                            Confirm password
                         </label>
 
-                        <span class="text-sm text-slate-400">
+                        <div class="relative">
 
-                            Secure login
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
 
-                        </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.8"
+                                    stroke="currentColor"
+                                    class="h-5 w-5 text-slate-400">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M9 12.75l2.25 2.25L15 9.75m6.75 2.25a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0z" />
+                                </svg>
+
+                            </div>
+
+                            <input
+                                id="password_confirmation"
+                                type="password"
+                                wire:model.live="password_confirmation"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10">
+
+                        </div>
+
+                        @error('password')
+
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+
+                        @enderror
 
                     </div>
 
@@ -475,9 +508,7 @@ new #[Layout('layouts.auth')] class extends Component
                     <div class="rounded-xl border border-red-100 bg-red-50 px-4 py-3">
 
                         <p class="text-sm font-medium text-red-700">
-
                             {{ $message }}
-
                         </p>
 
                     </div>
@@ -490,18 +521,16 @@ new #[Layout('layouts.auth')] class extends Component
                     <button
                         type="submit"
                         wire:loading.attr="disabled"
-                        wire:target="login"
+                        wire:target="register"
                         class="flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70">
 
-                        <span wire:loading.remove wire:target="login">
-
-                            Sign in
-
+                        <span wire:loading.remove wire:target="register">
+                            Create account
                         </span>
 
                         <span
                             wire:loading
-                            wire:target="login"
+                            wire:target="register"
                             class="flex items-center gap-2">
 
                             <svg
@@ -516,48 +545,49 @@ new #[Layout('layouts.auth')] class extends Component
                                     cy="12"
                                     r="10"
                                     stroke="currentColor"
-                                    stroke-width="4">
-                                </circle>
+                                    stroke-width="4"></circle>
 
                                 <path
                                     class="opacity-75"
                                     fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
-                                </path>
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
 
                             </svg>
 
-                            Signing in...
+                            Creating account...
 
                         </span>
 
                     </button>
 
-                    <!-- Register Link -->
+                </form>
 
-                    <div class="mt-6 text-center">
 
-                        <p class="text-sm text-slate-500">
-                            Don't have an account?
+                <!-- Login Link -->
 
-                            <a
-                                href="{{ route('auth.register') }}"
-                                wire:navigate
-                                class="font-semibold text-blue-600 transition hover:text-blue-700">
-                                Sign up
-                            </a>
-                        </p>
+                <div class="mt-6 text-center">
+
+                    <p class="text-sm text-slate-500">
+
+                        Already have an account?
 
                         <a
-                            href="{{ route('auth.forget-password') }}"
+                            href="{{ route('login') }}"
                             wire:navigate
-                            class="mt-3 inline-block text-sm font-semibold text-slate-500 transition hover:text-blue-600">
-                            Forgot your password?
+                            class="font-semibold text-blue-600 transition hover:text-blue-700">
+                            Sign in
                         </a>
 
-                    </div>
+                    </p>
 
-                </form>
+                    <a
+                        href="{{ route('auth.forget-password') }}"
+                        wire:navigate
+                        class="mt-3 inline-block text-sm font-semibold text-slate-500 transition hover:text-blue-600">
+                        Forgot your password?
+                    </a>
+
+                </div>
 
 
                 <!-- Security Notice -->
@@ -571,18 +601,15 @@ new #[Layout('layouts.auth')] class extends Component
                         stroke-width="1.8"
                         stroke="currentColor"
                         class="mt-0.5 h-5 w-5 shrink-0 text-emerald-500">
-
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M9 12.75L11.25 15 15 9.75m6.75 2.25a9.75 9.75 0 11-19.5 0 9.75 9.75 0 0119.5 0z" />
-
                     </svg>
 
                     <p class="text-xs leading-5 text-slate-500">
-
-                        Your connection is protected. Only authorized hospital staff can access the management dashboard.
-
+                        Your information is protected and securely stored.
+                        Only authorized hospital staff can access the management dashboard.
                     </p>
 
                 </div>

@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('/register', RegisterController::class);
-Route::post('/login', LoginController::class);
+// Route::post('/register', RegisterController::class);
+// Route::post('/login', LoginController::class);
 
 
 
-Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', LogoutController::class);
-});
+// Route::middleware('auth:api')->group(function () {
+//     Route::post('/logout', LogoutController::class);
+// });
