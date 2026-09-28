@@ -4,9 +4,10 @@ use App\Domains\Employee\Entities\Employee\EmployeeEntity;
 use App\Domains\Employee\UseCases\ShowEmplyeesUseCase\ShowEmplyeesUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Employee')]class extends Component
 {
     protected ShowEmplyeesUseCase $showEmplyeesUseCase;
 

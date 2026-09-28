@@ -4,9 +4,10 @@ use App\Domains\Hr\Entities\Hr\HrEntity;
 use App\Domains\Hr\UseCases\ShowHrUseCase\ShowHrUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Human Resource')] class extends Component
 {
     protected ShowHrUseCase $showHrUseCase;
 

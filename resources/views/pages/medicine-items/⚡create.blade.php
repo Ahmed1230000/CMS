@@ -5,9 +5,10 @@ use App\Domains\Pharmacy\Repositories\Contracts\Medicine\MedicineRepositoryInter
 use App\Domains\Pharmacy\UseCases\MedicineItem\CreateMedicineItemUseCase;
 use App\Models\Medicine;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medicine Item')]class extends Component
 {
     protected CreateMedicineItemUseCase $createMedicineItemUseCase;
     protected MedicineRepositoryInterface $medicineRepository;

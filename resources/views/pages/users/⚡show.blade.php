@@ -4,9 +4,10 @@ use App\Domains\User\DTOs\User\ShowUserDTO;
 use App\Domains\User\UseCases\ShowUserUseCase\ShowUserUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('USer')] class extends Component
 {
 
     protected ShowUserUseCase $showUserUseCase;
@@ -22,7 +23,7 @@ new #[Layout('layouts.dashboard')] class extends Component
     {
         $this->id = $id;
     }
-    
+
     #[Computed]
     public function user()
     {

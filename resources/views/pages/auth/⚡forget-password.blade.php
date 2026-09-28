@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Identity\DTOs\forgetPassword\ForgetPasswordDTO;
 use App\Domains\Identity\UseCases\ForgetPasswordUseCase\ForgetPasswordUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.auth')] class extends Component
+new #[Layout('layouts.auth')] #[Title('Forget Password')] class extends Component
 {
     use FlashMessageException;
 

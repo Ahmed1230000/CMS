@@ -4,9 +4,10 @@ use App\Common\Exceptions\HandlesLivewireExceptions;
 use App\Domains\Identity\DTOs\Register\RegisterDTO;
 use App\Domains\Identity\UseCases\RegisterUseCase\RegisterUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('User')]class extends Component
 {
     use HandlesLivewireExceptions;
 

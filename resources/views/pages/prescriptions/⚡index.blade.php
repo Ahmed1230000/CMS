@@ -4,10 +4,11 @@ use App\Domains\Prescription\DTOs\Prescription\IndexPrescriptionDTO;
 use App\Domains\Prescription\UseCases\IndexPrescriptionUseCase\IndexPrescriptionUseCase;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Prescription')]class extends Component
 {
     use WithPagination;
 

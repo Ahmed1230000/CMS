@@ -6,9 +6,10 @@ use App\Domains\Department\Entities\Department\DepartmentEntity;
 use App\Domains\Department\UseCases\Department\UpdateDepartmentUseCase;
 use App\Domains\Department\UseCases\ShowDepartmentUseCase\ShowDepartmentUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Department')] class extends Component
 {
     use FlashMessageException;
 
@@ -112,7 +113,6 @@ new #[Layout('layouts.dashboard')] class extends Component
                 'departments.show',
                 $this->department_id
             );
-
         } catch (\Throwable $exception) {
 
             $this->handleException($exception);
@@ -180,9 +180,9 @@ new #[Layout('layouts.dashboard')] class extends Component
                         class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none">
 
                     @error('name')
-                        <p class="mt-1 text-sm text-red-600">
-                            {{ $message }}
-                        </p>
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
                     @enderror
 
                 </div>
@@ -201,9 +201,9 @@ new #[Layout('layouts.dashboard')] class extends Component
                         class="w-full rounded-xl border border-slate-300 px-4 py-3 uppercase focus:border-blue-500 focus:outline-none">
 
                     @error('code')
-                        <p class="mt-1 text-sm text-red-600">
-                            {{ $message }}
-                        </p>
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
                     @enderror
 
                 </div>
@@ -222,9 +222,9 @@ new #[Layout('layouts.dashboard')] class extends Component
                         class="w-full rounded-xl border border-slate-300 px-4 py-3 focus:border-blue-500 focus:outline-none"></textarea>
 
                     @error('description')
-                        <p class="mt-1 text-sm text-red-600">
-                            {{ $message }}
-                        </p>
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
                     @enderror
 
                 </div>

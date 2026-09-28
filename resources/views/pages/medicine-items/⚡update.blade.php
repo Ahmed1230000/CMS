@@ -4,9 +4,10 @@ use App\Domains\Pharmacy\DTOs\MedicineItem\MedicineItemDTO;
 use App\Domains\Pharmacy\Repositories\Contracts\MedicineItem\MedicineItemRepositoryInterface;
 use App\Domains\Pharmacy\UseCases\MedicineItem\UpdateMedicineItemUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medicine Item')]class extends Component
 {
     protected UpdateMedicineItemUseCase $updateMedicineItemUseCase;
     protected MedicineItemRepositoryInterface $repository;

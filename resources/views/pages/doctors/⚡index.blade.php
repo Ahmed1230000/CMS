@@ -5,12 +5,13 @@ use App\Domains\Doctor\UseCases\Doctor\DeleteDoctorUseCase;
 use App\Domains\Doctor\UseCases\ListDoctorsUseCase\ListDoctorsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Doctors')] class extends Component
 {
     use FlashMessageException;
-    
+
     protected ListDoctorsUseCase $listDoctorsUseCase;
     protected DeleteDoctorUseCase $deleteDoctorUseCase;
 

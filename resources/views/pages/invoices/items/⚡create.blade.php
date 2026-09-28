@@ -13,9 +13,10 @@ use App\Domains\Pharmacy\DTOs\MedicineItem\SearchMedicineItemDTO;
 use App\Domains\Pharmacy\UseCases\SearchMedicineItemUseCase\SearchMedicineItemUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')]
+new #[Layout('layouts.dashboard')] #[Title('Invoice Item')]
 class extends Component
 {
     public string $invoice;

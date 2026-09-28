@@ -5,8 +5,9 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use App\Domains\User\UseCases\ListUsersUseCase\ListUsersUseCase;
+use Livewire\Attributes\Title;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('User')] class extends Component
 {
     protected ListUsersUseCase $listUsersUseCase;
 

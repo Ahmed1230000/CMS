@@ -3,9 +3,10 @@
 use App\Domains\Dashboard\UseCases\GetDashboardStatsUseCase\GetDashboardStatsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Dashboard')]class extends Component
 {
     protected GetDashboardStatsUseCase $getDashboardStatsUseCase;
 

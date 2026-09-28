@@ -3,9 +3,10 @@
 use App\Domains\Request\UseCases\IndexRequestUseCase\IndexRequestUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Requests')]class extends Component
 {
     protected IndexRequestUseCase $indexRequestUseCase;
 

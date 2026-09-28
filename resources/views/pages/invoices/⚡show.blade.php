@@ -7,9 +7,10 @@ use App\Domains\Payment\Enums\PaymentMethodEnum;
 use App\Domains\Payment\UseCases\CreateCardPaymentUseCase\CreateCardPaymentUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Invoice')] class extends Component
 {
     public string $id;
 

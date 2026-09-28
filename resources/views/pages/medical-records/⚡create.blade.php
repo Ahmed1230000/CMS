@@ -5,9 +5,10 @@ use App\Domains\MedicalRecord\DTOs\MedicalRecord\MedicalRecordDTO;
 use App\Domains\MedicalRecord\UseCases\MedicalRecord\CreateMedicalRecordUseCase;
 use App\Domains\Patient\UseCases\SearchPatientsByPhoneUseCase\SearchPatientsByPhoneUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medical Record')]class extends Component
 {
     use FlashMessageException;
 

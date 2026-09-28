@@ -5,9 +5,10 @@ use App\Domains\Doctor\DTOs\Doctor\DoctorDTO;
 use App\Domains\Doctor\UseCases\Doctor\CreateDoctorUseCase;
 use App\Domains\Department\UseCases\ListDepartmentsUseCase\ListDepartmentsUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Doctor')] class extends Component
 {
     use FlashMessageException;
 
@@ -121,7 +122,7 @@ new #[Layout('layouts.dashboard')] class extends Component
             ],
         ]);
 
-        
+
 
         try {
 

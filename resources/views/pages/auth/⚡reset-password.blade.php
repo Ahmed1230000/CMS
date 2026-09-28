@@ -3,9 +3,10 @@
 use App\Domains\Identity\DTOs\ForgetPassword\ResetPasswordDTO;
 use App\Domains\Identity\UseCases\ForgetPasswordUseCase\ForgetPasswordUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.auth')] class extends Component
+new #[Layout('layouts.auth')] #[Title('Reset Password')] class extends Component
 {
     public string $token = '';
 

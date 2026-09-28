@@ -4,10 +4,11 @@ use App\Domains\Department\Entities\Department\DepartmentEntity;
 use App\Domains\Department\UseCases\ShowDepartmentUseCase\ShowDepartmentUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Department')] class extends Component
 {
     protected ShowDepartmentUseCase $showDepartmentUseCase;
 

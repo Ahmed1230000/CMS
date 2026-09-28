@@ -4,9 +4,10 @@ use App\Domains\Appointment\UseCases\Appointment\DeleteAppointmentUseCase;
 use App\Domains\Appointment\UseCases\ListAppointmentsUseCase\ListAppointmentsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Appointments')]class extends Component
 {
     protected ListAppointmentsUseCase $listAppointmentsUseCase;
 

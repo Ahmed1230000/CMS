@@ -5,9 +5,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Authorization\DTOs\Roles\RolesDTO;
 use App\Domains\Authorization\UseCases\Roles\CreateRolesUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Roles')] class extends Component
 {
     use FlashMessageException;
 

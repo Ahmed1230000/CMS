@@ -2,9 +2,10 @@
 
 use App\Domains\Identity\UseCases\SendVerificationEmailUseCase\SendVerificationEmailUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.auth')] class extends Component
+new #[Layout('layouts.auth')] #[Title('Verification Email')] class extends Component
 {
     protected SendVerificationEmailUseCase $sendVerificationEmailUseCase;
 

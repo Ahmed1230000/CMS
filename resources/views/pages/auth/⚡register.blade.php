@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Identity\DTOs\Register\RegisterDTO;
 use App\Domains\Identity\UseCases\RegisterUseCase\RegisterUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.auth')] class extends Component
+new #[Layout('layouts.auth')] #[Title('Register')] class extends Component
 {
     use FlashMessageException;
 

@@ -2,10 +2,11 @@
 
 use App\Domains\Invoice\UseCases\Invoice\CreateInvoiceUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 new
-    #[Layout('layouts.dashboard')]
+    #[Layout('layouts.dashboard')] #[Title('Invoice')]
     class extends Component
     {
         private CreateInvoiceUseCase $createInvoiceUseCase;

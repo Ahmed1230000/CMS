@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Department\DTOs\Department\DepartmentDTO;
 use App\Domains\Department\UseCases\Department\CreateDepartmentUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Department')] class extends Component
 {
     use FlashMessageException;
 

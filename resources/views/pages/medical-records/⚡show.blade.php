@@ -4,9 +4,10 @@ use App\Domains\MedicalRecord\DTOs\MedicalRecord\ShowMedicalRecordDTO;
 use App\Domains\MedicalRecord\UseCases\ShowMedicalRecordUseCase\ShowMedicalRecordUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medical Record')]class extends Component
 {
     protected ShowMedicalRecordUseCase $showMedicalRecordUseCase;
 

@@ -4,9 +4,10 @@ use App\Domains\Patient\UseCases\GetPatientMedicalDocumentsUseCase\GetPatientMed
 use App\Domains\Patient\UseCases\ShowPatientUseCase\ShowPatientUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Patient')]class extends Component
 {
     protected ShowPatientUseCase $showPatientUseCase;
 

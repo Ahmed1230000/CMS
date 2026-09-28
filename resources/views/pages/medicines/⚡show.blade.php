@@ -3,9 +3,10 @@
 use App\Domains\Pharmacy\UseCases\ShowMedicineUseCase\ShowMedicineUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medicine')]class extends Component
 {
     protected ShowMedicineUseCase $showMedicineUseCase;
 

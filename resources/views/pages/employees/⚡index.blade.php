@@ -5,9 +5,10 @@ use App\Domains\Employee\UseCases\Employee\DeleteEmployeeUseCase;
 use App\Domains\Employee\UseCases\ListEmplyeesUseCase\ListEmplyeesUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Employees')] class extends Component
 {
     use FlashMessageException;
 

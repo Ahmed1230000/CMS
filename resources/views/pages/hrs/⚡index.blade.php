@@ -4,9 +4,10 @@ use App\Domains\Hr\UseCases\Hr\DeleteHrUseCase;
 use App\Domains\Hr\UseCases\ListHrsUseCase\ListHrsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Human Resources')] class extends Component
 {
     protected ListHrsUseCase $listHrsUseCase;
     protected DeleteHrUseCase $deleteHrUseCase;
@@ -28,16 +29,15 @@ new #[Layout('layouts.dashboard')] class extends Component
 
     public function delete(int $id)
     {
-        try{
+        try {
             $this->deleteHrUseCase->execute($id);
             unset($this->hrs);
 
-             session()->flash(
+            session()->flash(
                 'success',
                 'Department deleted successfully.'
             );
-
-        }catch (\Throwable $exception) {
+        } catch (\Throwable $exception) {
 
             $this->handleException($exception);
         }
