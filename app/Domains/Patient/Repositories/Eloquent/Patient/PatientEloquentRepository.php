@@ -95,6 +95,11 @@ class PatientEloquentRepository implements PatientRepositoryInterface
         $patient->delete();
     }
 
+    public function count(): int
+    {
+        return  Patient::count();
+    }
+
     public function find(int $id): ?PatientEntity
     {
         $patient = Patient::find($id);

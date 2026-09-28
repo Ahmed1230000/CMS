@@ -4,9 +4,10 @@ use App\Domains\Request\DTOs\Request\RequestDTO;
 use App\Domains\Request\Repositories\Contracts\Request\RequestRepositoryInterface;
 use App\Domains\Request\UseCases\Request\UpdateRequestUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Requests')]class extends Component
 {
     protected UpdateRequestUseCase $updateRequestUseCase;
     protected RequestRepositoryInterface $repository;

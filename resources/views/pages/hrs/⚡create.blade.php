@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Hr\DTOs\Hr\HrDTO;
 use App\Domains\Hr\UseCases\Hr\CreateHrUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Human Resource')] class extends Component
 {
     use FlashMessageException;
 

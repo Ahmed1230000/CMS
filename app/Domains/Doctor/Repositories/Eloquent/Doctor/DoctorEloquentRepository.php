@@ -94,6 +94,10 @@ class DoctorEloquentRepository implements DoctorRepositoryInterface
 
         $doctor->delete();
     }
+    public function count(): int
+    {
+        return Doctor::count();
+    }
 
     public function find(int $id): ?DoctorEntity
     {

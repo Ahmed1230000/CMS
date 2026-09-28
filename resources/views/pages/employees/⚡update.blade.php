@@ -5,9 +5,10 @@ use App\Domains\Employee\UseCases\Employee\UpdateEmployeeUseCase;
 use App\Common\Traits\FlashMessageException;
 use App\Domains\Employee\Repositories\Eloquent\Employee\EmployeeEloquentRepository;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Employee')] class extends Component
 {
     use FlashMessageException;
 

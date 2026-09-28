@@ -3,9 +3,10 @@
 use App\Domains\MedicalRecord\UseCases\ListMedicalRecordsUseCase\ListMedicalRecordsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Medical Records')]class extends Component
 {
     protected ListMedicalRecordsUseCase $listMedicalRecordsUseCase;
 

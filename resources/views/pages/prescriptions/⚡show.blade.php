@@ -4,9 +4,10 @@ use App\Domains\Prescription\DTOs\Prescription\ShowPrescriptionDTO;
 use App\Domains\Prescription\UseCases\ShowPrescriptionUseCase\ShowPrescriptionUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Prescription')] class extends Component
 {
     protected ShowPrescriptionUseCase $showPrescriptionUseCase;
 

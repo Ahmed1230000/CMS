@@ -5,10 +5,11 @@ use App\Domains\Patient\DTOs\Patient\PatientDTO;
 use App\Domains\Patient\UseCases\Patient\CreatePatientUseCase;
 use App\Domains\Patient\UseCases\AddMedicalDocumentUseCase\AddMedicalDocumentUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Patient')]class extends Component
 {
     use FlashMessageException;
     use WithFileUploads;

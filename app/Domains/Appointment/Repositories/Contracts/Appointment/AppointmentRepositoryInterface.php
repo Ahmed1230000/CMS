@@ -18,6 +18,7 @@ interface AppointmentRepositoryInterface
     public function delete(int $id): void;
 
     public function find(int $id): AppointmentEntity;
+    public function count(): int;
 
     public function hasConflict(
         int $doctorId,

@@ -22,6 +22,8 @@ interface UserRepositoryInterface
     public function findById(int $id): ?UserEntity;
 
     public function findModel(int $id): ?User;
+    
+    public function count():int;
     /**
      * @param int $perPage
      * @return UserEntity[]|LengthAwarePaginator

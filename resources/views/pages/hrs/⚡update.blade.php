@@ -6,9 +6,10 @@ use App\Domains\Hr\Entities\Hr\HrEntity;
 use App\Domains\Hr\Repositories\Contracts\Hr\HrRepositoryInterface;
 use App\Domains\Hr\UseCases\Hr\UpdateHrUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Human Resource')] class extends Component
 {
     use FlashMessageException;
 

@@ -5,9 +5,10 @@ use App\Domains\Authorization\UseCases\ListRolesUseCase\ListRolesUseCase;
 use App\Domains\Authorization\UseCases\SyncUserRolesUseCase\SyncUserRolesUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Roles')] class extends Component
 {
     /*
     |--------------------------------------------------------------------------

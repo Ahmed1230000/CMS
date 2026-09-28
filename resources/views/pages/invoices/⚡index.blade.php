@@ -3,9 +3,10 @@
 use App\Domains\Invoice\UseCases\IndexInvoiceUseCase\IndexInvoiceUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')]
+new #[Layout('layouts.dashboard')] #[Title('Invoices')]
 class extends Component
 {
     private IndexInvoiceUseCase $indexInvoiceUseCase;

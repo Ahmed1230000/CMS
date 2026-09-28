@@ -5,9 +5,10 @@ use App\Domains\Appointment\UseCases\Appointment\CreateAppointmentUseCase;
 use App\Domains\Doctor\UseCases\ListDoctorsUseCase\ListDoctorsUseCase;
 use App\Domains\Patient\UseCases\ListPatientsUseCase\ListPatientsUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Appointment')] class extends Component
 {
     protected CreateAppointmentUseCase $createAppointmentUseCase;
 

@@ -6,9 +6,10 @@ use App\Domains\Doctor\DTOs\Doctor\DoctorDTO;
 use App\Domains\Doctor\Repositories\Contracts\Doctor\DoctorRepositoryInterface;
 use App\Domains\Doctor\UseCases\Doctor\UpdateDoctorUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Doctor')] class extends Component
 {
     use FlashMessageException;
 

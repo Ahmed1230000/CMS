@@ -9,10 +9,11 @@ use App\Domains\Patient\UseCases\ShowPatientUseCase\ShowPatientUseCase;
 use App\Domains\Patient\UseCases\UpdateMedicalDocumentUseCase\UpdateMedicalDocumentUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Patient')]class extends Component
 {
     use FlashMessageException;
     use WithFileUploads;

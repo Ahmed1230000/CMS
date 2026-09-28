@@ -5,9 +5,10 @@ use App\Domains\Department\UseCases\Department\DeleteDepartmentUseCase;
 use App\Domains\Department\UseCases\ListDepartmentsUseCase\ListDepartmentsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Departments')]class extends Component
 {
     use FlashMessageException;
 

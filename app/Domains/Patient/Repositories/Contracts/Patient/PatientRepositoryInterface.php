@@ -19,6 +19,7 @@ interface PatientRepositoryInterface
     public function update(PatientEntity $patientEntity): PatientEntity;
     public function delete(int $id): void;
     public function find(int $id): ?PatientEntity;
+    public function count(): int;
 
     public function searchByPhone(string $phone);
     public function addMedicalDocument(int $patientId, UploadedFile $uploadedFile, int $creatorId);

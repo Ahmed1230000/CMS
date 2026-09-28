@@ -6,9 +6,10 @@ use App\Domains\Payment\Enums\PaymentMethodEnum;
 use App\Domains\Payment\UseCases\Payment\CreatePaymentUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Payment')]class extends Component
 {
     public string $invoice;
 

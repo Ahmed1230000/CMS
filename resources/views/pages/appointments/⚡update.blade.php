@@ -13,9 +13,10 @@ use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterfac
 use App\Domains\Department\Repositories\Contracts\Department\DepartmentRepositoryInterface;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Appointment')] class extends Component
 {
     protected ShowAppointmentUseCase $showAppointmentUseCase;
 

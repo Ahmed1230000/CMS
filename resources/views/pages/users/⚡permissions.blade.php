@@ -5,9 +5,10 @@ use App\Domains\Authorization\UseCases\ListPermissionsUseCase\ListPermissionsUse
 use App\Domains\Authorization\UseCases\SyncUserPermissionsUseCase\SyncUserPermissionsUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Permissions')] class extends Component
 {
     /*
     |--------------------------------------------------------------------------

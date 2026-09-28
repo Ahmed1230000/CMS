@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Authorization\DTOs\Permission\PermissionDTO;
 use App\Domains\Authorization\UseCases\Permission\CreatePermissionUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Permissions')]class extends Component
 {
     use FlashMessageException;
 

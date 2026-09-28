@@ -4,9 +4,10 @@ use App\Common\Traits\FlashMessageException;
 use App\Domains\Identity\DTOs\Login\LoginDTO;
 use App\Domains\Identity\UseCases\LoginUseCase\LoginUseCase;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.auth')] class extends Component
+new #[Layout('layouts.auth')] #[Title('Login')]class extends Component
 {
     use FlashMessageException;
 

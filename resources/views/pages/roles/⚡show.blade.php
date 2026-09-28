@@ -4,9 +4,10 @@ use App\Common\Exceptions\HandlesLivewireExceptions;
 use App\Domains\Authorization\UseCases\ShowRoleUseCase\ShowRoleUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Roles')]class extends Component
 {
     use HandlesLivewireExceptions;
 

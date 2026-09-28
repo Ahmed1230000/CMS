@@ -4,9 +4,10 @@ use App\Domains\Doctor\Entities\Doctor\DoctorEntity;
 use App\Domains\Doctor\UseCases\ShowDoctorUseCase\ShowDoctorUseCase;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.dashboard')] class extends Component
+new #[Layout('layouts.dashboard')] #[Title('Doctor')] class extends Component
 {
     protected ShowDoctorUseCase $showDoctorUseCase;
 
