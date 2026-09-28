@@ -3,8 +3,7 @@
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
-
-
+// Email Verification
 Route::get('/email/verify/{id}/{hash}', function (
     EmailVerificationRequest $request
 ) {
@@ -20,19 +19,19 @@ Route::livewire(
 )->middleware('auth')
     ->name('verification.notice');
 
-Route::livewire('/users', 'pages::users.index')
-    ->middleware('auth')
-    ->name('users.index');
 
-Route::livewire('/users/create', 'pages::users.create')
-    ->middleware('auth')
-    ->name('users.create');
+// Protected Routes
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::livewire('/users/delete', 'pages::users.delete')
-    ->middleware('auth')
-    ->name('users.delete');
+    Route::livewire('/users', 'pages::users.index')
+        ->name('users.index');
 
+    Route::livewire('/users/create', 'pages::users.create')
+        ->name('users.create');
 
-Route::livewire('/users/show/{id}', 'pages::users.show')
-    ->middleware('auth')
-    ->name('users.show');
+    Route::livewire('/users/delete', 'pages::users.delete')
+        ->name('users.delete');
+
+    Route::livewire('/users/show/{id}', 'pages::users.show')
+        ->name('users.show');
+});

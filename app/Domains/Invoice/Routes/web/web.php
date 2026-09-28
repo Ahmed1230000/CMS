@@ -2,28 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-Route::livewire(
-    'invoices',
-    'pages::invoices.index'
-)->middleware('auth')
-    ->name('invoices.index');
-
-Route::livewire(
-    'invoices/show/{id}',
-    'pages::invoices.show'
-)->middleware('auth')
-    ->name('invoices.show');
-
-Route::livewire(
-    'invoices/create',
-    'pages::invoices.create'
-)->middleware('auth')
-    ->name('invoices.create');
-
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::livewire(
-    'invoices/{invoice}/items',
-    'pages::invoices/items.create'
-)->middleware('auth')
- ->name('invoice-items.create');
+        'invoices',
+        'pages::invoices.index'
+    )->name('invoices.index');
+
+    Route::livewire(
+        'invoices/show/{id}',
+        'pages::invoices.show'
+    )->name('invoices.show');
+
+    Route::livewire(
+        'invoices/create',
+        'pages::invoices.create'
+    )->name('invoices.create');
+
+    Route::livewire(
+        'invoices/{invoice}/items',
+        'pages::invoices/items.create'
+    )->name('invoice-items.create');
+
+});

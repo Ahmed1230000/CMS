@@ -2,22 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::livewire(
-    'appointments',
-    'pages::appointments.index'
-)->middleware('auth')->name('appointments.index');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::livewire(
-    'appointments/create',
-    'pages::appointments.create'
-)->middleware('auth')->name('appointments.create');
+    Route::livewire(
+        'appointments',
+        'pages::appointments.index'
+    )->name('appointments.index');
 
-Route::livewire(
-    'appointments/update/{id}',
-    'pages::appointments.update'
-)->middleware('auth')->name('appointments.update');
+    Route::livewire(
+        'appointments/create',
+        'pages::appointments.create'
+    )->name('appointments.create');
 
-Route::livewire(
-    'appointments/{id}',
-    'pages::appointments.show'
-)->middleware('auth')->name('appointments.show');
+    Route::livewire(
+        'appointments/update/{id}',
+        'pages::appointments.update'
+    )->name('appointments.update');
+
+    Route::livewire(
+        'appointments/{id}',
+        'pages::appointments.show'
+    )->name('appointments.show');
+});
