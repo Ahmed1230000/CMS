@@ -40,7 +40,10 @@ class UserEloquentRepository implements UserRepositoryInterface
         return User::findOrFail($id);
     }
 
-
+    public function count():int
+    {
+        return User::count();
+    }
 
     public function list(int $perPage = 10): LengthAwarePaginator
     {

@@ -98,6 +98,11 @@ class AppointmentEloquentRepository implements AppointmentRepositoryInterface
         );
     }
 
+    public function count(): int
+    {
+        return Appointment::count();
+    }
+
     public function delete(int $id): void
     {
         $appointment = Appointment::findOrFail($id);

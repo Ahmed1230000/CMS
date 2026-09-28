@@ -17,5 +17,7 @@ interface DoctorRepositoryInterface
     public function create(DoctorEntity $doctorEntity): DoctorEntity;
     public function update(DoctorEntity $doctorEntity): DoctorEntity;
     public function delete(int $id);
+    public function count(): int;
+
     public function find(int $id): ?DoctorEntity;
 }
