@@ -2,6 +2,10 @@
 
 namespace App\Domains\User\Providers;
 
+use Illuminate\Support\Facades\Event;
+use App\Domains\User\Events\User\SendWelcomeMessageEvent;
+use App\Domains\User\Listeners\User\SendWelcomeMessageListener;
+
 use App\Domains\User\Policies\USer\TestPolicy;
 
 use Illuminate\Support\Facades\Gate;
@@ -27,6 +31,10 @@ class UserDomainServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Event::listen(
+            SendWelcomeMessageEvent::class,
+            SendWelcomeMessageListener::class
+        );
         $this->loadRoutes();
         $this->loadMigrations();
 

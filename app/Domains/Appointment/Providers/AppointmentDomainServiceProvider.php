@@ -2,6 +2,10 @@
 
 namespace App\Domains\Appointment\Providers;
 
+use Illuminate\Support\Facades\Event;
+use App\Domains\Appointment\Events\Appointment\CreateAppointmentEvent;
+use App\Domains\Appointment\Listeners\Appointment\CreateAppointmentListener;
+
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +22,10 @@ class AppointmentDomainServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Event::listen(
+            CreateAppointmentEvent::class,
+            CreateAppointmentListener::class
+        );
         $this->loadRoutes();
         $this->loadMigrations();
     }

@@ -8,6 +8,7 @@ use App\Domains\Identity\Exceptions\Login\InvalidCredentialsException;
 use App\Domains\Identity\Service\CreateSessionService;
 use App\Domains\User\DTOs\User\UserDTO;
 use App\Domains\User\Entities\User\UserEntity;
+use App\Domains\User\Events\User\SendWelcomeMessageEvent;
 use App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
 use Illuminate\Auth\Events\Registered;
 
@@ -55,7 +56,7 @@ class RegisterUseCase
 
         $this->createSessionService->login($user);
 
-        event(new Registered($userModel));
+        event(new SendWelcomeMessageEvent($userModel));
 
         return $user;
     }

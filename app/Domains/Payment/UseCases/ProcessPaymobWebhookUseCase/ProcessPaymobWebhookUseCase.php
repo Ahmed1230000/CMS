@@ -69,6 +69,7 @@ class ProcessPaymobWebhookUseCase
         $paymentEntity = PaymentMapper::toEntity($payment);
 
         $paymobAmount = (int) $dto->transaction['amount_cents'];
+        
         $paymentAmount = (int) round($paymentEntity->amount * 100);
 
         if ($paymobAmount !== $paymentAmount) {
@@ -144,8 +145,6 @@ class ProcessPaymobWebhookUseCase
             $this->paymentRepositoryInterface->update(
                 $paymentEntity
             );
-
-
 
             $invoice = $this->repository->findForUpdate(
                 $paymentEntity->invoiceId
