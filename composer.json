@@ -15,9 +15,11 @@
         "laravel/passport": "^13.0",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.3",
+        "predis/predis": "^3.6",
         "spatie/laravel-medialibrary": "^11.23",
         "spatie/laravel-permission": "^8.3",
-        "spatie/laravel-query-builder": "^7.3"
+        "spatie/laravel-query-builder": "^7.3",
+        "ahmed-ahmed/laravel-ddd": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -35,12 +37,6 @@
             "Database\\Seeders\\": "database/seeders/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../laravel-ddd"
-        }
-    ],
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"

@@ -6,6 +6,7 @@ use App\Domains\Appointment\Repositories\Contracts\Appointment\AppointmentReposi
 use App\Domains\Doctor\Repositories\Contracts\Doctor\DoctorRepositoryInterface;
 use App\Domains\Patient\Repositories\Contracts\Patient\PatientRepositoryInterface;
 use App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class GetDashboardStatsUseCase
 {
@@ -30,11 +31,28 @@ class GetDashboardStatsUseCase
 
     public function execute(): array
     {
-        return [
-            'users'        => $this->userRepositoryInterface->count(),
-            'patients'     => $this->patientRepositoryInterface->count(),
-            'doctors'      => $this->doctorRepositoryInterface->count(),
-            'appointments' => $this->appointmentRepositoryInterface->count(),
-        ];
+        $cache = cache::get('dashboard:stats');
+
+        if ($cache !== null) {
+            return $cache;
+        }
+
+        return cache::lock('dashboard:stats', 10)->block(5, function () {
+            $cache = cache::get('dashboard:stats');
+
+            if ($cache !== null) {
+                return $cache;
+            }
+            $status = [
+                'users'        => $this->userRepositoryInterface->count(),
+                'patients'     => $this->patientRepositoryInterface->count(),
+                'doctors'      => $this->doctorRepositoryInterface->count(),
+                'appointments' => $this->appointmentRepositoryInterface->count(),
+            ];
+
+            cache::put('dashboard:stats', $status, 300);
+
+            return $status;
+        });
     }
 }

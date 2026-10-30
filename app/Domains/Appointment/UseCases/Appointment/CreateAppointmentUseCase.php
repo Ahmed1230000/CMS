@@ -4,6 +4,7 @@ namespace App\Domains\Appointment\UseCases\Appointment;
 
 use App\Domains\Appointment\DTOs\Appointment\AppointmentDTO;
 use App\Domains\Appointment\Entities\Appointment\AppointmentEntity;
+use App\Domains\Appointment\Events\Appointment\CreateAppointmentEvent;
 use App\Domains\Appointment\Exceptions\Appointment\DoctorHasAppointmentConflictException;
 use App\Domains\Appointment\Exceptions\Appointment\DoctorNotFoundException;
 use App\Domains\Appointment\Exceptions\Appointment\InactiveDepartmentException;
@@ -96,6 +97,10 @@ class CreateAppointmentUseCase
             created_by: auth()->id(),
         );
 
-        return $this->repository->create($appointmentEntity);
+        $appointment =  $this->repository->create($appointmentEntity);
+
+        event(new CreateAppointmentEvent($appointment));
+
+        return $appointment;
     }
 }
