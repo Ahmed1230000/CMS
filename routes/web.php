@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+
 Route::livewire('/', 'pages::auth.login')
     ->middleware('guest')
     ->name('login');
