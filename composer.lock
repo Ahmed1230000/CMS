@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "813e58a71e24240b857da1face82d998",
+    "content-hash": "19200d04e4b3ce07d3ba16051888bfaf",
     "packages": [
         {
-            "name": "ahmed/laravel-ddd",
-            "version": "1.0.0",
+            "name": "ahmed-ahmed/laravel-ddd",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ahmed1230000/DDD.git",
+                "reference": "29bb0398cd569ff1e9353ac85afeeadbfc9614be"
+            },
             "dist": {
-                "type": "path",
-                "url": "../laravel-ddd",
-                "reference": "06a47648ea2e9116ca743964cbbb4320521eb4cc"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ahmed1230000/DDD/zipball/29bb0398cd569ff1e9353ac85afeeadbfc9614be",
+                "reference": "29bb0398cd569ff1e9353ac85afeeadbfc9614be",
+                "shasum": ""
             },
             "type": "library",
             "extra": {
@@ -27,10 +33,16 @@
                     "Ahmed\\DDD\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "description": "A Laravel DDD implementation",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/Ahmed1230000/DDD/issues",
+                "source": "https://github.com/Ahmed1230000/DDD/tree/v1.0.0"
+            },
+            "time": "2026-10-30T14:39:57+00:00"
         },
         {
             "name": "brick/math",
