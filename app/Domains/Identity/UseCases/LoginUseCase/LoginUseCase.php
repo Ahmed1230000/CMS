@@ -8,7 +8,7 @@ use App\Domains\Identity\DTOs\Login\LoginResultDTO;
 use App\Domains\Identity\Exceptions\Login\InvalidCredentialsException;
 use App\Domains\Identity\Service\CreateSessionService;
 use App\Domains\Identity\Service\PassportTokenService;
-use App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
+use App\Domains\User\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
 
 class LoginUseCase
 {

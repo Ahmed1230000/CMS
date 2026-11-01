@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domains\USer\Repositories\Eloquent\HashPassword;
+namespace App\Domains\User\Repositories\Eloquent\HashPassword;
 
 use App\Common\ValueObjectSystem\PasswordVO;
-use App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
+use App\Domains\User\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
 class HashPasswordEloquentRepository implements HashPasswordRepositoryInterface

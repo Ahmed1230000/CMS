@@ -19,8 +19,8 @@ class UserDomainServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Domains\USer\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface::class,
-            \App\Domains\USer\Repositories\Eloquent\HashPassword\HashPasswordEloquentRepository::class
+            \App\Domains\User\Repositories\Contracts\HashPassword\HashPasswordRepositoryInterface::class,
+            \App\Domains\User\Repositories\Eloquent\HashPassword\HashPasswordEloquentRepository::class
         );
         $this->app->bind(
             \App\Domains\User\Repositories\Contracts\User\UserRepositoryInterface::class,
