@@ -12,10 +12,10 @@ Route::livewire(
     'pages::auth.register'
 )->name('auth.register');
 
-Route::post(
-    '/login',
-    LoginController::class
-);
+// Route::post(
+//     '/login',
+//     LoginController::class
+// );
 
 Route::livewire(
     '/forget-password',
