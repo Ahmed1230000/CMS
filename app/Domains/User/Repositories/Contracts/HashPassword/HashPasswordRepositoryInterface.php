@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\USer\Repositories\Contracts\HashPassword;
+namespace App\Domains\User\Repositories\Contracts\HashPassword;
 
 use App\Common\ValueObjectSystem\PasswordVO;
 
