@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Domains\Pharmacy\Database\Factories\MedicineFactory;
-use App\Domains\Pharmacy\Enums\MedicineStatusEnum;
+use App\Domains\pharmacy\Database\Factories\MedicineFactory;
+use App\Domains\PHarmacy\Enums\MedicineStatusEnum;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
